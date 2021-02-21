@@ -1,3 +1,4 @@
+using Unity.Entities;
 using UnityEngine;
 
 public class Game : MonoBehaviour
@@ -5,9 +6,11 @@ public class Game : MonoBehaviour
     public AsteroidSpawner asteroidSpawner;
     public ShotSpawner shotSpawner;
     public static Game instance;
+    EntityManager entityManager;
 
     private void Awake() {
         instance = this;
+        entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
     }
 
     void Start() {
@@ -17,7 +20,7 @@ public class Game : MonoBehaviour
         asteroidSpawner.SpawnAsteroids();
     }
 
-    void Update() {
-
+    public void OnSpaceshipCollidedWithAsteroid(Vector3 asteroidPos) {
+        Debug.Log(asteroidPos);
     }
 }
