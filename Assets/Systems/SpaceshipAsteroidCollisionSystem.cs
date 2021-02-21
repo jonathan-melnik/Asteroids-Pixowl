@@ -32,9 +32,9 @@ public class SpaceshipAsteroidCollisionSystem : JobComponentSystem
             }
 
             if (allAsteroids.HasComponent(entityA) && allSpaceships.HasComponent(entityB)) {
-                UnityEngine.Debug.Log($"La entidad A(Asteroid) colisiono con la entidad B(Spaceship)");
+                //UnityEngine.Debug.Log($"La entidad A(Asteroid) colisiono con la entidad B(Spaceship)");
             } else if (allSpaceships.HasComponent(entityA) && allAsteroids.HasComponent(entityB)) {
-                UnityEngine.Debug.Log($"La entidad A(Spaceship) colisiono con la entidad B(Asteroid)");
+                //UnityEngine.Debug.Log($"La entidad A(Spaceship) colisiono con la entidad B(Asteroid)");
             }
         }
     }

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4290706097447520899}
   - component: {fileID: 4290706097447520898}
   - component: {fileID: 2760455831063513863}
+  - component: {fileID: 6253765059233624147}
   m_Layer: 0
   m_Name: Shot
   m_TagString: Untagged
@@ -158,3 +159,17 @@ MonoBehaviour:
   angle: 0
   angleOffset: 0
   angularSpeed: 0
+--- !u!114 &6253765059233624147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4290706097447520925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17c9ab8d0f16c714d80fdd41354b87f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToDie: 1
+  timer: 0

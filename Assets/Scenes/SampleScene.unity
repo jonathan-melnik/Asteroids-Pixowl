@@ -361,6 +361,7 @@ GameObject:
   - component: {fileID: 1102012927}
   - component: {fileID: 1102012928}
   - component: {fileID: 1102012929}
+  - component: {fileID: 1102012930}
   m_Layer: 0
   m_Name: Spaceship
   m_TagString: Untagged
@@ -516,6 +517,20 @@ MonoBehaviour:
   angle: 0
   angleOffset: 90
   angularSpeed: 5
+--- !u!114 &1102012930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102012920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63ba4ae026410224887164f966114742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 0
+  speed: 25
 --- !u!850595691 &1396243368
 LightingSettings:
   m_ObjectHideFlags: 0
