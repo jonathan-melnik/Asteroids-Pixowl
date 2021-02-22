@@ -9,14 +9,14 @@ public class HyperspaceUI : MonoBehaviour
     public Color txtColorHyperspaceDisabled;
     public Color txtColorHyperspaceEnabled;
     public Transform progressBar;
-    float lastProgress;
+    float _lastProgress;
 
     void Awake() {
         //Reset(0);
     }
 
     public void Reset(float progress) {
-        lastProgress = progress;
+        _lastProgress = progress;
         //SetProgress(progress);
     }
 
@@ -25,7 +25,7 @@ public class HyperspaceUI : MonoBehaviour
 
         hyperspaceTxt.color = progress == 1 ? txtColorHyperspaceEnabled : txtColorHyperspaceDisabled;
 
-        if (progress == 1 && lastProgress != 1) {
+        if (progress == 1 && _lastProgress != 1) {
             Debug.Log("Full");
         }
     }

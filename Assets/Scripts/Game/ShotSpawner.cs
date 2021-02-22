@@ -11,7 +11,7 @@ public class ShotSpawner : MonoBehaviour
     EntityManager _entityManager;
     Entity _shotEntityPrefab;
     BlobAssetStore _blobAssetStore;
-    float angleOffset = math.radians(90);
+    float _angleOffset = math.radians(90);
 
     private void Awake() {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -34,7 +34,7 @@ public class ShotSpawner : MonoBehaviour
         _entityManager.AddComponentData(shot, translation);
 
         var rotation = new Rotation() {
-            Value = quaternion.Euler(0, 0, angle + angleOffset)
+            Value = quaternion.Euler(0, 0, angle + _angleOffset)
         };
         _entityManager.AddComponentData(shot, rotation);
 

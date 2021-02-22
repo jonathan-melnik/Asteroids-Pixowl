@@ -538,6 +538,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!4 &732549164 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 375157211302211737, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+    type: 3}
+  m_PrefabInstance: {fileID: 8014661304271668380}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &732549165 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1432518410914670074, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+    type: 3}
+  m_PrefabInstance: {fileID: 8014661304271668380}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ace1b5cf0cd012418313d4dfd80505e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &771571431
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -636,6 +654,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 574374103}
+  - {fileID: 732549164}
   m_Father: {fileID: 1495092062}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -654,6 +673,7 @@ MonoBehaviour:
   spaceshipPrefab: {fileID: 984683211813815065, guid: 25578f45bd1ab284691f2d34ac659429,
     type: 3}
   thrusters: {fileID: 574374102}
+  shield: {fileID: 732549165}
 --- !u!1 &955926019
 GameObject:
   m_ObjectHideFlags: 0
@@ -731,6 +751,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -803,6 +824,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6774b11ca6aa36d4da7e4116048ab60e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 3928e332db452f74eb1077a7f32c2005, type: 2}
 --- !u!1 &1347551057
 GameObject:
   m_ObjectHideFlags: 0
@@ -972,6 +1006,7 @@ MonoBehaviour:
   shotSpawner: {fileID: 2043722151}
   spaceshipSpawner: {fileID: 830274426}
   uiManager: {fileID: 66257969}
+  cameraScreenFade: {fileID: 963194229}
 --- !u!4 &1495092062
 Transform:
   m_ObjectHideFlags: 0
@@ -1271,3 +1306,97 @@ Transform:
   m_Father: {fileID: 1495092062}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &8014661304271668380
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 830274425}
+    m_Modifications:
+    - target: {fileID: 375157211302211737, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 375157211302211737, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 375157211302211737, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 375157211302211737, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 375157211302211737, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 375157211302211737, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 375157211302211737, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 375157211302211737, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 375157211302211737, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 375157211302211737, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 375157211302211737, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 375157211302211737, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 375157211302211737, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 566975765856904618, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_Name
+      value: SpaceshipShield
+      objectReference: {fileID: 0}
+    - target: {fileID: 566975765856904618, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1244623275327397110, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1244623275327397110, guid: 743bb46affa429f4b9b46ff273fcfcb4,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 743bb46affa429f4b9b46ff273fcfcb4, type: 3}

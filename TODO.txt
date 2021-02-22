@@ -1,0 +1,9 @@
+UFO
+Sonidos
+Warp-cambio de escena
+Vidas
+Pantalla gameover
+Pantalla victoria
+Fx Hyperspace
+
+Leaderboard?

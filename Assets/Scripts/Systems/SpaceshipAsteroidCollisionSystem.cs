@@ -42,6 +42,9 @@ public class SpaceshipAsteroidCollisionSystem : JobComponentSystem
         }
 
         void OnCollision(Entity asteroid, Entity spaceship) {
+            if (Game.instance.spaceshipSpawner.shield.IsActive()) {
+                return;
+            }
             ecb.DestroyEntity(asteroid);
             ecb.DestroyEntity(spaceship);
             var asteroidPos = allTranslations[asteroid].Value;

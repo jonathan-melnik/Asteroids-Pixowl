@@ -7,7 +7,7 @@ using UnityEngine;
 public class SpaceshipThrusters : MonoBehaviour
 {
     public ParticleSystem thrusters;
-    bool wasThrusting = false;
+    bool _wasThrusting = false;
 
     void Awake() {
         thrusters.Stop();
@@ -19,7 +19,7 @@ public class SpaceshipThrusters : MonoBehaviour
     }
 
     public void OnSpaceshipEntityIsThrusting(bool isThrusting) {
-        if (wasThrusting == isThrusting) {
+        if (_wasThrusting == isThrusting) {
             return;
         }
         if (isThrusting) {
@@ -27,7 +27,7 @@ public class SpaceshipThrusters : MonoBehaviour
         } else {
             thrusters.Stop();
         }
-        wasThrusting = isThrusting;
+        _wasThrusting = isThrusting;
     }
 
     public void Activate() {

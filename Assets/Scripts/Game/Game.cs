@@ -8,6 +8,7 @@ public class Game : MonoBehaviour
     public ShotSpawner shotSpawner;
     public SpaceshipSpawner spaceshipSpawner;
     public UIManager uiManager;
+    public CameraScreenFade cameraScreenFade;
     public static Game instance;
 
     private void Awake() {
@@ -15,11 +16,14 @@ public class Game : MonoBehaviour
 
         ScreenCorners.LowerLeft.Data = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
         ScreenCorners.UpperRight.Data = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, 0));
+
+        cameraScreenFade.FadeIn(0.4f);
     }
 
     void Start() {
         spaceshipSpawner.SpawnSpaceship();
         asteroidSpawner.SpawnInitialAsteroids();
+
     }
 
     private void Update() {
@@ -45,6 +49,5 @@ public class Game : MonoBehaviour
         if (asteroidSize > 1) {
             asteroidSpawner.ScheduleSpawnAsteroidsFromAsteroid(asteroidPos, asteroidSize);
         }
-        spaceshipSpawner.OnSpaceshipDestroyed();
     }
 }
