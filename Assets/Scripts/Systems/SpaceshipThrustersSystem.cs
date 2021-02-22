@@ -4,7 +4,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 
 [AlwaysSynchronizeSystem]
-public class SpaceshipThrusters : JobComponentSystem
+public class SpaceshipThrustersSystem : JobComponentSystem
 {
     protected override JobHandle OnUpdate(JobHandle inputDeps) {
         Entities
@@ -12,8 +12,9 @@ public class SpaceshipThrusters : JobComponentSystem
             .WithoutBurst()
             .ForEach((in Translation tr, in Rotation rot, in MovementData movement) =>
         {
-            Game.instance.spaceship.OnSpaceshipEntityMoved(tr.Value, rot.Value);
-            Game.instance.spaceship.OnSpaceshipEntityIsThrusting(movement.accel > 0);
+            var thrusters = Game.instance.spaceshipSpawner.thrusters;
+            thrusters.OnSpaceshipEntityMoved(tr.Value, rot.Value);
+            thrusters.OnSpaceshipEntityIsThrusting(movement.accel > 0);
         }).Run();
 
         return default;

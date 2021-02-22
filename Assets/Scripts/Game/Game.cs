@@ -6,7 +6,8 @@ public class Game : MonoBehaviour
 {
     public AsteroidSpawner asteroidSpawner;
     public ShotSpawner shotSpawner;
-    public Spaceship spaceship;
+    public SpaceshipSpawner spaceshipSpawner;
+    public UIManager uiManager;
     public static Game instance;
 
     private void Awake() {
@@ -17,6 +18,7 @@ public class Game : MonoBehaviour
     }
 
     void Start() {
+        spaceshipSpawner.SpawnSpaceship();
         asteroidSpawner.SpawnInitialAsteroids();
     }
 
@@ -32,11 +34,13 @@ public class Game : MonoBehaviour
         if (asteroidSize > 1) {
             asteroidSpawner.ScheduleSpawnAsteroidsFromAsteroid(asteroidPos, asteroidSize);
         }
+        spaceshipSpawner.OnSpaceshipDestroyed();
     }
 
     public void OnShotCollidedWithAsteroid(Vector3 asteroidPos, int asteroidSize) {
         if (asteroidSize > 1) {
             asteroidSpawner.ScheduleSpawnAsteroidsFromAsteroid(asteroidPos, asteroidSize);
         }
+        spaceshipSpawner.OnSpaceshipDestroyed();
     }
 }

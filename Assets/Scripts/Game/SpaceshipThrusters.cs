@@ -4,7 +4,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class Spaceship : MonoBehaviour
+public class SpaceshipThrusters : MonoBehaviour
 {
     public ParticleSystem thrusters;
     bool wasThrusting = false;
@@ -28,5 +28,14 @@ public class Spaceship : MonoBehaviour
             thrusters.Stop();
         }
         wasThrusting = isThrusting;
+    }
+
+    public void Activate() {
+        gameObject.SetActive(true);
+        thrusters.Stop();
+    }
+
+    public void Deactivate() {
+        gameObject.SetActive(false);
     }
 }
