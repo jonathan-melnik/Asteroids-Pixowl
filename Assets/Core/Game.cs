@@ -10,12 +10,12 @@ public class Game : MonoBehaviour
 
     private void Awake() {
         instance = this;
+
+        ScreenCorners.LowerLeft.Data = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
+        ScreenCorners.UpperRight.Data = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, 0));
     }
 
     void Start() {
-        ScreenCorners.LowerLeft.Data = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
-        ScreenCorners.UpperRight.Data = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, 0));
-
         asteroidSpawner.SpawnAsteroids();
     }
 

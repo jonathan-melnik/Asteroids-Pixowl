@@ -22,6 +22,7 @@ public class SpaceshipAsteroidCollisionSystem : JobComponentSystem
     {
         [ReadOnly] public ComponentDataFromEntity<SpaceshipTag> allSpaceships;
         [ReadOnly] public ComponentDataFromEntity<AsteroidTag> allAsteroids;
+        [ReadOnly] public ComponentDataFromEntity<Translation> allTranslations;
         public EntityCommandBuffer ecb;
         public EntityManager entityManager;
 
@@ -43,8 +44,8 @@ public class SpaceshipAsteroidCollisionSystem : JobComponentSystem
         void OnCollision(Entity asteroid, Entity spaceship) {
             ecb.DestroyEntity(asteroid);
             ecb.DestroyEntity(spaceship);
-            var asteroidPos = entityManager.GetComponentData<Translation>(asteroid);
-            Game.instance.OnSpaceshipCollidedWithAsteroid(asteroidPos.Value);
+            var asteroidPos = allTranslations[asteroid].Value;
+            Game.instance.OnSpaceshipCollidedWithAsteroid(asteroidPos);
         }
     }
 
@@ -52,6 +53,7 @@ public class SpaceshipAsteroidCollisionSystem : JobComponentSystem
         var job = new SpaceshipAsteroidCollisionSystemJob();
         job.allSpaceships = GetComponentDataFromEntity<SpaceshipTag>(true);
         job.allAsteroids = GetComponentDataFromEntity<AsteroidTag>(true);
+        job.allTranslations = GetComponentDataFromEntity<Translation>(true);
         job.ecb = new EntityCommandBuffer(Allocator.TempJob);
         job.entityManager = EntityManager;
 

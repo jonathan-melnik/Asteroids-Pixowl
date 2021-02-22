@@ -32,9 +32,8 @@ public class ShotSpawner : MonoBehaviour
         };
         _entityManager.AddComponentData(shot, translation);
 
-        var movement = new MovementData() {
-            speed = speed,
-            angle = angle
+        var movement = new ConstantMovementData() {
+            velocity = new float3(math.cos(angle), 0, math.sin(angle)) * speed
         };
         _entityManager.AddComponentData(shot, movement);
     }

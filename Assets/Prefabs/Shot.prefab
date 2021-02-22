@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 4290706097447520896}
   - component: {fileID: 4290706097447520899}
   - component: {fileID: 4290706097447520898}
-  - component: {fileID: 2760455831063513863}
   - component: {fileID: 6253765059233624147}
+  - component: {fileID: 5794844995343398617}
   m_Layer: 0
   m_Name: Shot
   m_TagString: Untagged
@@ -141,24 +141,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2760455831063513863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4290706097447520925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fbf507972b7d884aba78d87bcd4443e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 0
-  accel: 0
-  maxSpeed: 0
-  angle: 0
-  angleOffset: 0
-  angularSpeed: 0
 --- !u!114 &6253765059233624147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,3 +155,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToDie: 1
   timer: 0
+--- !u!114 &5794844995343398617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4290706097447520925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ea6163159bb2d48aeacbc9f1501383, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocity:
+    x: 0
+    y: 0
+    z: 0

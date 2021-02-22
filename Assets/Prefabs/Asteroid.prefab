@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8193093166841409141}
   - component: {fileID: 8193093166841409140}
   - component: {fileID: 8193093166841409163}
-  - component: {fileID: 2294790020538340762}
+  - component: {fileID: -3843848507105146268}
   m_Layer: 0
   m_Name: Asteroid
   m_TagString: Untagged
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac10909cd85f8f9428477c7afbe57ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2294790020538340762
+--- !u!114 &-3843848507105146268
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -132,18 +132,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8193093166841409162}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fbf507972b7d884aba78d87bcd4443e, type: 3}
+  m_Script: {fileID: 11500000, guid: c0ea6163159bb2d48aeacbc9f1501383, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   velocity:
-    x: 0
-    y: 0
-    z: 0
-  angularSpeed: 0
-  angle: 0
-  angleOffset: 0
-  maxSpeed: 0
-  accel:
     x: 0
     y: 0
     z: 0
