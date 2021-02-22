@@ -15,13 +15,14 @@ public class MoveForwardSystem : JobComponentSystem
 
             rot.Value = quaternion.Euler(0, -movement.angle, 0);
 
-            movement.speed += movement.accel * dt;
+            movement.velocity += movement.accel * direction * dt;
             // Limito la velocidad maxima(salvo que maxSpeed sea 0, en ese caso no hago clamp)
-            if (movement.maxSpeed > 0) {
-                movement.speed = math.clamp(movement.speed, -movement.maxSpeed, movement.maxSpeed);
+            float speed = math.length(movement.velocity);
+            if (speed > movement.maxSpeed) {
+                movement.velocity = math.normalize(movement.velocity) * movement.maxSpeed;
             }
 
-            tr.Value += movement.speed * direction * dt + 0.5f * movement.accel * new float3(1, 0, 1) * dt * dt;
+            tr.Value += movement.velocity * dt + 0.5f * movement.accel * new float3(1, 0, 1) * dt * dt;
         }).Schedule(inputDeps);
 
         return myJob;
