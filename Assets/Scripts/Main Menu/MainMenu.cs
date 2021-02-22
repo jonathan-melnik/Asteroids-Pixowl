@@ -10,7 +10,7 @@ public class MainMenu : MonoBehaviour
     public CameraScreenFade cameraScreenFade;
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.X)) {
             TransitionToGame();
         }
 

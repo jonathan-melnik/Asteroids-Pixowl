@@ -26,6 +26,7 @@ public class Game : MonoBehaviour
     void Start() {
         spaceshipSpawner.SpawnSpaceship();
         asteroidSpawner.SpawnInitialAsteroids();
+        uiManager.lives.SetCount(lives);
     }
 
     private void Update() {
@@ -38,6 +39,7 @@ public class Game : MonoBehaviour
         }
 
         if (_checkRespawnOrGameOver) {
+            uiManager.lives.SetCount(lives);
             _checkRespawnOrGameOver = false;
             if (lives > 0) {
                 spaceshipSpawner.OnSpaceshipDestroyed();
@@ -70,6 +72,7 @@ public class Game : MonoBehaviour
 
     public void GoToMainMenu() {
         World.DisposeAllWorlds();
+        DefaultWorldInitialization.Initialize("Default World", false);
         SceneManager.LoadScene("MainMenu");
     }
 }
