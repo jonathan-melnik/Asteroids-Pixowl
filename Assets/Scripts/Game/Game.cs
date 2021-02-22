@@ -28,6 +28,10 @@ public class Game : MonoBehaviour
             DefaultWorldInitialization.Initialize("Default World", false);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            Application.Quit();
+        }
     }
 
     public void OnSpaceshipCollidedWithAsteroid(Vector3 asteroidPos, int asteroidSize) {
