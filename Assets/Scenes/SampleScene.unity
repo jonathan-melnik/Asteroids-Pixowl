@@ -97,7 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 27044a3f7147bab43bad715e900c55e6,
+    type: 2}
   m_LightingSettings: {fileID: 1396243368}
 --- !u!196 &4
 NavMeshSettings:
@@ -152,7 +153,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb20af2eb401b704e9880158d77241d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  asteroidPrefab: {fileID: 8193093166841409162, guid: ed109d8c66e8d2942a19fb2c801bf00a,
+  bigAsteroidPrefab: {fileID: 8193093166841409162, guid: ed109d8c66e8d2942a19fb2c801bf00a,
+    type: 3}
+  mediumAsteroidPrefab: {fileID: 8193093166841409162, guid: fb8b90e20dfe56a40b1035bee7278de3,
+    type: 3}
+  smallAsteroidPrefab: {fileID: 8193093166841409162, guid: 845d0ad2f954e6f4d968c0b931969c48,
     type: 3}
 --- !u!4 &87759268
 Transform:
@@ -430,7 +435,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -487,6 +492,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thrustAccel: 25
+  angularSpeed: 5
 --- !u!114 &1102012928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -511,12 +517,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fbf507972b7d884aba78d87bcd4443e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
   accel: 0
+  velocity:
+    x: 0
+    y: 0
+    z: 0
   maxSpeed: 25
   angle: 0
   angleOffset: 90
-  angularSpeed: 5
 --- !u!114 &1102012930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -530,7 +538,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0
-  speed: 25
+  speed: 35
 --- !u!850595691 &1396243368
 LightingSettings:
   m_ObjectHideFlags: 0

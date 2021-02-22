@@ -16,7 +16,7 @@ public class Game : MonoBehaviour
     }
 
     void Start() {
-        asteroidSpawner.SpawnAsteroids();
+        asteroidSpawner.SpawnInitialAsteroids();
     }
 
     private void Update() {
@@ -27,9 +27,15 @@ public class Game : MonoBehaviour
         }
     }
 
-    public void OnSpaceshipCollidedWithAsteroid(Vector3 asteroidPos) {
+    public void OnSpaceshipCollidedWithAsteroid(Vector3 asteroidPos, int asteroidSize) {
+        if (asteroidSize > 1) {
+            asteroidSpawner.ScheduleSpawnAsteroidsFromAsteroid(asteroidPos, asteroidSize);
+        }
     }
 
-    public void OnShotCollidedWithAsteroid(Vector3 asteroidPos) {
+    public void OnShotCollidedWithAsteroid(Vector3 asteroidPos, int asteroidSize) {
+        if (asteroidSize > 1) {
+            asteroidSpawner.ScheduleSpawnAsteroidsFromAsteroid(asteroidPos, asteroidSize);
+        }
     }
 }

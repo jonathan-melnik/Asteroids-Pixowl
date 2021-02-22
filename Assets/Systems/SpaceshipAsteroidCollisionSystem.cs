@@ -21,7 +21,7 @@ public class SpaceshipAsteroidCollisionSystem : JobComponentSystem
     public struct SpaceshipAsteroidCollisionSystemJob : ITriggerEventsJob
     {
         [ReadOnly] public ComponentDataFromEntity<SpaceshipTag> allSpaceships;
-        [ReadOnly] public ComponentDataFromEntity<AsteroidTag> allAsteroids;
+        [ReadOnly] public ComponentDataFromEntity<AsteroidData> allAsteroids;
         [ReadOnly] public ComponentDataFromEntity<Translation> allTranslations;
         public EntityCommandBuffer ecb;
         public EntityManager entityManager;
@@ -45,14 +45,14 @@ public class SpaceshipAsteroidCollisionSystem : JobComponentSystem
             ecb.DestroyEntity(asteroid);
             ecb.DestroyEntity(spaceship);
             var asteroidPos = allTranslations[asteroid].Value;
-            Game.instance.OnSpaceshipCollidedWithAsteroid(asteroidPos);
+            Game.instance.OnSpaceshipCollidedWithAsteroid(asteroidPos, allAsteroids[asteroid].size);
         }
     }
 
     protected override JobHandle OnUpdate(JobHandle inputDeps) {
         var job = new SpaceshipAsteroidCollisionSystemJob();
         job.allSpaceships = GetComponentDataFromEntity<SpaceshipTag>(true);
-        job.allAsteroids = GetComponentDataFromEntity<AsteroidTag>(true);
+        job.allAsteroids = GetComponentDataFromEntity<AsteroidData>(true);
         job.allTranslations = GetComponentDataFromEntity<Translation>(true);
         job.ecb = new EntityCommandBuffer(Allocator.TempJob);
         job.entityManager = EntityManager;
