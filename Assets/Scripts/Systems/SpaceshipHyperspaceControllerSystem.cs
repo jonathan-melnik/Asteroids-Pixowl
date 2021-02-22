@@ -17,13 +17,16 @@ public class SpaceshipHyperspaceControllerSystem : JobComponentSystem
 
         Entities
             .WithAll<SpaceshipTag>()
+            .WithoutBurst()
             .ForEach((ref Translation tr, ref MovementData movement, ref HyperspaceData hyperspace) =>
             {
                 hyperspace.timer = math.max(hyperspace.timer - dt, 0);
                 if (Input.GetKeyDown(KeyCode.Z) && hyperspace.timer == 0) {
                     float x = UnityEngine.Random.Range(screenLeft, screenRight);
                     float y = UnityEngine.Random.Range(screenBottom, screenTop);
-                    tr.Value = new float3(x, y, 0);
+                    float3 newPos = new float3(x, y, 0);
+                    Game.instance.fxManager.PlayHyperspace(tr.Value, newPos);
+                    tr.Value = newPos;
                     // Detengo a la nave
                     movement.accel = 0;
                     movement.velocity = float3.zero;

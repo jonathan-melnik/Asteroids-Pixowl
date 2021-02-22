@@ -1,9 +1,10 @@
-UFO
-Sonidos
-Warp-cambio de escena
 Vidas
 Pantalla gameover
 Pantalla victoria
-Fx Hyperspace
+Power Ups(otro disparo, shield
+UFO
+Sonidos
 
-Leaderboard?
+LISTO Comenzar invencible
+LISTO Fx Hyperspace
+LISTO Warp-cambio de escena

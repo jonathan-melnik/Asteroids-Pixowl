@@ -29,4 +29,8 @@ public class HyperspaceUI : MonoBehaviour
             Debug.Log("Full");
         }
     }
+
+    public void Hide() {
+        gameObject.SetActive(false);
+    }
 }

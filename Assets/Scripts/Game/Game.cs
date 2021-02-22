@@ -9,6 +9,9 @@ public class Game : MonoBehaviour
     public SpaceshipSpawner spaceshipSpawner;
     public UIManager uiManager;
     public CameraScreenFade cameraScreenFade;
+    public FxManager fxManager;
+    public int lives = 1;
+    bool _checkRespawnOrGameOver = false;
     public static Game instance;
 
     private void Awake() {
@@ -23,18 +26,24 @@ public class Game : MonoBehaviour
     void Start() {
         spaceshipSpawner.SpawnSpaceship();
         asteroidSpawner.SpawnInitialAsteroids();
-
     }
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.R)) { // Reiniciar juego
-            World.DisposeAllWorlds();
-            DefaultWorldInitialization.Initialize("Default World", false);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            Retry();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)) {
             Application.Quit();
+        }
+
+        if (_checkRespawnOrGameOver) {
+            _checkRespawnOrGameOver = false;
+            if (lives > 0) {
+                spaceshipSpawner.OnSpaceshipDestroyed();
+            } else {
+                uiManager.ShowGameOver();
+            }
         }
     }
 
@@ -42,12 +51,25 @@ public class Game : MonoBehaviour
         if (asteroidSize > 1) {
             asteroidSpawner.ScheduleSpawnAsteroidsFromAsteroid(asteroidPos, asteroidSize);
         }
-        spaceshipSpawner.OnSpaceshipDestroyed();
+
+        lives--;
+        _checkRespawnOrGameOver = true; // seteo un flag y ejecutar despues en el main thread
     }
 
     public void OnShotCollidedWithAsteroid(Vector3 asteroidPos, int asteroidSize) {
         if (asteroidSize > 1) {
             asteroidSpawner.ScheduleSpawnAsteroidsFromAsteroid(asteroidPos, asteroidSize);
         }
+    }
+
+    public void Retry() {
+        World.DisposeAllWorlds();
+        DefaultWorldInitialization.Initialize("Default World", false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void GoToMainMenu() {
+        World.DisposeAllWorlds();
+        SceneManager.LoadScene("MainMenu");
     }
 }

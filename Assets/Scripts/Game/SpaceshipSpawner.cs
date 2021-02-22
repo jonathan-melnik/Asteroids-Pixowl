@@ -13,7 +13,6 @@ public class SpaceshipSpawner : MonoBehaviour
     EntityManager _entityManager;
     Entity _spaceshipEntityPrefab;
     BlobAssetStore _blobAssetStore;
-    bool _spaceshipDestroyedFlag = false;
     float _timerRespawn = 0;
 
     const float TIME_TO_RESPAWN = 2;
@@ -33,12 +32,6 @@ public class SpaceshipSpawner : MonoBehaviour
     }
 
     void Update() {
-        if (_spaceshipDestroyedFlag) {
-            thrusters.Deactivate();
-            _spaceshipDestroyedFlag = false;
-            _timerRespawn = TIME_TO_RESPAWN;
-        }
-
         if (_timerRespawn > 0) {
             _timerRespawn -= Time.deltaTime;
             if (_timerRespawn <= 0) {
@@ -57,7 +50,8 @@ public class SpaceshipSpawner : MonoBehaviour
     }
 
     public void OnSpaceshipDestroyed() {
-        _spaceshipDestroyedFlag = true; // Uso un flag porque no puedo desactivar el gameobject de los thrusters desde el main thead
+        thrusters.Deactivate();
+        _timerRespawn = TIME_TO_RESPAWN;
     }
 
 }
