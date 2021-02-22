@@ -1,5 +1,4 @@
 Vidas
-Pantalla gameover
 Pantalla victoria
 Power Ups(otro disparo, shield
 UFO
@@ -8,3 +7,4 @@ Sonidos
 LISTO Comenzar invencible
 LISTO Fx Hyperspace
 LISTO Warp-cambio de escena
+LISTO Pantalla gameover
