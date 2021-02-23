@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Unity.Entities;
+using Unity.Transforms;
 using UnityEngine;
 
 public class SpaceshipSpawner : MonoBehaviour
@@ -12,7 +13,6 @@ public class SpaceshipSpawner : MonoBehaviour
     Entity _spaceshipEntity = Entity.Null;
     BlobAssetStore _blobAssetStore;
     float _timerRespawn = 0;
-    Queue<PowerUpType> _powerUpsPickedUpQueue = new Queue<PowerUpType>();
 
     const float TIME_TO_RESPAWN = 2;
 
@@ -37,14 +37,11 @@ public class SpaceshipSpawner : MonoBehaviour
                 SpawnSpaceship();
             }
         }
-
-        while (_powerUpsPickedUpQueue.Count > 0) {
-            ApplyPowerUp(_powerUpsPickedUpQueue.Dequeue());
-        }
     }
 
     public void SpawnSpaceship() {
         _spaceshipEntity = _entityManager.Instantiate(_spaceshipEntityPrefab);
+        _entityManager.SetName(_spaceshipEntity, "Spaceship");
         Game.instance.uiManager.hyperspace.Reset(1);
 
         thrusters.Activate();
@@ -62,17 +59,21 @@ public class SpaceshipSpawner : MonoBehaviour
     }
 
     public void OnSpaceshipPickUpPowerUp(PowerUpType powerUpType) {
-        _powerUpsPickedUpQueue.Enqueue(powerUpType);
+        ApplyPowerUp(powerUpType);
     }
 
     void ApplyPowerUp(PowerUpType powerUpType) {
         if (powerUpType == PowerUpType.Shield) {
             shield.ActivateWithPowerUp();
-        } else if (powerUpType == PowerUpType.Mines) {
-
-        } else if (powerUpType == PowerUpType.Shotgun) {
+        } else if (powerUpType == PowerUpType.Bomb) {
+            Game.instance.bombSpawner.Spawn(GetSpaceshipPos());
+        } else if (powerUpType == PowerUpType.HomingMissile) {
 
         }
+    }
+
+    public Vector3 GetSpaceshipPos() {
+        return _entityManager.GetComponentData<Translation>(_spaceshipEntity).Value;
     }
 
 }

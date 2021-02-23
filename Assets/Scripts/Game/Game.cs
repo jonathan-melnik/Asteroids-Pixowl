@@ -8,6 +8,7 @@ public class Game : MonoBehaviour
     public AsteroidSpawner asteroidSpawner;
     public ShotSpawner shotSpawner;
     public SpaceshipSpawner spaceshipSpawner;
+    public BombSpawner bombSpawner;
     public UIManager uiManager;
     public CameraScreenFade cameraScreenFade;
     public CollisionManager collisionManager;
@@ -43,6 +44,10 @@ public class Game : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape)) {
             Application.Quit();
+        }
+
+        if (Input.GetKeyDown(KeyCode.B)) {
+            bombSpawner.Spawn(spaceshipSpawner.GetSpaceshipPos());
         }
     }
 

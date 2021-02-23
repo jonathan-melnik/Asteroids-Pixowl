@@ -1,5 +1,5 @@
 Pantalla victoria
-Power Ups(otro disparo, shield
+Power Ups(falta bomba y misil dirigido)
 UFO
 Sonidos
 Diferente velocidad para cada asteroide(chequear el gdd)

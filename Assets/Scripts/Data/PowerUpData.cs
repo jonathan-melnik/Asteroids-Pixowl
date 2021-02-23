@@ -12,6 +12,6 @@ public struct PowerUpData : IComponentData
 public enum PowerUpType
 {
     Shield,
-    Mines,
-    Shotgun
+    HomingMissile,
+    Bomb
 }

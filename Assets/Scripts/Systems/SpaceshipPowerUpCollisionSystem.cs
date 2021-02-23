@@ -22,17 +22,10 @@ public class SpaceshipPowerUpCollisionSystem : JobComponentSystem
     {
         [ReadOnly] public ComponentDataFromEntity<SpaceshipTag> allSpaceships;
         [ReadOnly] public ComponentDataFromEntity<PowerUpData> allPowerUps;
-        [ReadOnly] public ComponentDataFromEntity<Translation> allTranslations;
-        public EntityCommandBuffer ecb;
-        public EntityManager entityManager;
 
         public void Execute(TriggerEvent triggerEvent) {
             Entity entityA = triggerEvent.EntityA;
             Entity entityB = triggerEvent.EntityB;
-
-            if (allPowerUps.HasComponent(entityA) && allPowerUps.HasComponent(entityB)) {
-                return;
-            }
 
             if (allPowerUps.HasComponent(entityA) && allSpaceships.HasComponent(entityB)) {
                 OnCollision(entityA, entityB);
@@ -42,9 +35,7 @@ public class SpaceshipPowerUpCollisionSystem : JobComponentSystem
         }
 
         void OnCollision(Entity powerUp, Entity spaceship) {
-            ecb.DestroyEntity(powerUp);
-            var powerUpPos = allTranslations[powerUp].Value;
-            Game.instance.collisionManager.OnSpaceshipCollidedWithPowerUp(allPowerUps[powerUp].type);
+            Game.instance.collisionManager.OnSpaceshipCollidedWithPowerUp(spaceship, powerUp);
         }
     }
 
@@ -52,15 +43,9 @@ public class SpaceshipPowerUpCollisionSystem : JobComponentSystem
         var job = new SpaceshipAsteroidCollisionSystemJob();
         job.allSpaceships = GetComponentDataFromEntity<SpaceshipTag>(true);
         job.allPowerUps = GetComponentDataFromEntity<PowerUpData>(true);
-        job.allTranslations = GetComponentDataFromEntity<Translation>(true);
-        job.ecb = new EntityCommandBuffer(Allocator.TempJob);
-        job.entityManager = EntityManager;
 
         JobHandle jobHandle = job.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, inputDeps);
         jobHandle.Complete();
-
-        job.ecb.Playback(EntityManager);
-        job.ecb.Dispose();
 
         return jobHandle;
     }

@@ -23,33 +23,20 @@ public class ShotAsteroidCollisionSystem : JobComponentSystem
     {
         [ReadOnly] public ComponentDataFromEntity<ShotTag> allShots;
         [ReadOnly] public ComponentDataFromEntity<AsteroidData> allAsteroids;
-        [ReadOnly] public ComponentDataFromEntity<Translation> allTranslations;
-        public EntityCommandBuffer ecb;
-        public EntityManager entityManager;
 
         public void Execute(TriggerEvent triggerEvent) {
             Entity entityA = triggerEvent.EntityA;
             Entity entityB = triggerEvent.EntityB;
 
-            if (allAsteroids.HasComponent(entityA) && allAsteroids.HasComponent(entityB)) {
-                return;
-            }
-            if (allShots.HasComponent(entityA) && allShots.HasComponent(entityB)) {
-                return;
-            }
             if (allAsteroids.HasComponent(entityA) && allShots.HasComponent(entityB)) {
-                OnCollision(entityA, entityB, allAsteroids[entityA]);
+                OnCollision(entityA, entityB);
             } else if (allShots.HasComponent(entityA) && allAsteroids.HasComponent(entityB)) {
-                OnCollision(entityB, entityA, allAsteroids[entityB]);
+                OnCollision(entityB, entityA);
             }
         }
 
-        void OnCollision(Entity asteroid, Entity shot, AsteroidData asteroidData) {
-            ecb.DestroyEntity(asteroid);
-            ecb.DestroyEntity(shot);
-            var asteroidPos = allTranslations[asteroid].Value;
-            var shotPos = allTranslations[shot].Value;
-            Game.instance.collisionManager.OnShotCollidedWithAsteroid(asteroidPos, asteroidData.size, shotPos);
+        void OnCollision(Entity asteroid, Entity shot) {
+            Game.instance.collisionManager.OnShotCollidedWithAsteroid(shot, asteroid);
         }
     }
 
@@ -57,15 +44,9 @@ public class ShotAsteroidCollisionSystem : JobComponentSystem
         var job = new SpaceshipAsteroidCollisionSystemJob();
         job.allShots = GetComponentDataFromEntity<ShotTag>(true);
         job.allAsteroids = GetComponentDataFromEntity<AsteroidData>(true);
-        job.allTranslations = GetComponentDataFromEntity<Translation>(true);
-        job.ecb = new EntityCommandBuffer(Allocator.TempJob);
-        job.entityManager = EntityManager;
 
         JobHandle jobHandle = job.Schedule(_stepPhysicsWorld.Simulation, ref _buildPhysicsWorld.PhysicsWorld, inputDeps);
         jobHandle.Complete();
-
-        job.ecb.Playback(EntityManager);
-        job.ecb.Dispose();
 
         return jobHandle;
     }

@@ -1,95 +1,104 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Entities;
+using Unity.Transforms;
 using UnityEngine;
 
 public class CollisionManager : MonoBehaviour
 {
-    Queue<SpaceshipAsteroidCollision> _spaceshipAsteroidCollisionsQueue = new Queue<SpaceshipAsteroidCollision>();
-    Queue<ShotAsteroidCollision> _shotAsteroidCollisionsQueue = new Queue<ShotAsteroidCollision>();
-    Queue<SpaceshipPowerUpCollision> _spaceshipPowerUpCollisionsQueue = new Queue<SpaceshipPowerUpCollision>();
+    Queue<Tuple<Entity, Entity>> _spaceshipAsteroidCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
+    Queue<Tuple<Entity, Entity>> _shotAsteroidCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
+    Queue<Tuple<Entity, Entity>> _spaceshipPowerUpCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
+    Queue<Tuple<Entity, Entity>> _bombAsteroidCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
+    EntityManager _entityManager;
+    private void Start() {
+        _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+    }
 
     private void Update() {
         while (_spaceshipAsteroidCollisionsQueue.Count > 0) {
-            ResolveSpaceshipAsteroidCollision(_spaceshipAsteroidCollisionsQueue.Dequeue());
+            var pair = _spaceshipAsteroidCollisionsQueue.Dequeue();
+            ResolveSpaceshipAsteroidCollision(pair.Item1, pair.Item2);
         }
 
         while (_shotAsteroidCollisionsQueue.Count > 0) {
-            ResolveShotAsteroidCollision(_shotAsteroidCollisionsQueue.Dequeue());
+            var pair = _shotAsteroidCollisionsQueue.Dequeue();
+            ResolveShotAsteroidCollision(pair.Item1, pair.Item2);
         }
 
         while (_spaceshipPowerUpCollisionsQueue.Count > 0) {
-            ResolveSpaceshipPowerUpCollision(_spaceshipPowerUpCollisionsQueue.Dequeue());
+            var pair = _spaceshipPowerUpCollisionsQueue.Dequeue();
+            ResolveSpaceshipPowerUpCollision(pair.Item1, pair.Item2);
+        }
+
+        while (_bombAsteroidCollisionsQueue.Count > 0) {
+            var pair = _bombAsteroidCollisionsQueue.Dequeue();
+            ResolveBombAsteroidCollision(pair.Item1, pair.Item2);
         }
     }
 
-    void ResolveSpaceshipAsteroidCollision(SpaceshipAsteroidCollision collision) {
+    void ResolveSpaceshipAsteroidCollision(Entity spaceship, Entity asteroid) {
         var spaceshipSpawner = Game.instance.spaceshipSpawner;
         var asteroidSpawner = Game.instance.asteroidSpawner;
-        if (collision.asteroidSize > 1) {
-            asteroidSpawner.SpawnAsteroidsFromAsteroid(collision.asteroidPos, collision.asteroidSize);
+        var asteroidSize = _entityManager.GetComponentData<AsteroidData>(asteroid).size;
+        var asteroidPos = _entityManager.GetComponentData<Translation>(asteroid).Value;
+        var spaceshipPos = _entityManager.GetComponentData<Translation>(spaceship).Value;
+
+        _entityManager.GetComponentData<AsteroidData>(asteroid);
+        if (asteroidSize > 1) {
+            asteroidSpawner.SpawnAsteroidsFromAsteroid(asteroidPos, asteroidSize);
         }
-        spaceshipSpawner.OnSpaceshipDestroyed(collision.spaceshipPos);
+        spaceshipSpawner.OnSpaceshipDestroyed(spaceshipPos);
+
+        _entityManager.DestroyEntity(asteroid);
+        _entityManager.DestroyEntity(spaceship);
+
         Game.instance.DecreaseLives();
     }
 
-    void ResolveShotAsteroidCollision(ShotAsteroidCollision collision) {
+    void ResolveShotAsteroidCollision(Entity shot, Entity asteroid) {
         var asteroidSpawner = Game.instance.asteroidSpawner;
         var fxManager = Game.instance.fxManager;
-        if (collision.asteroidSize > 1) {
-            asteroidSpawner.SpawnAsteroidsFromAsteroid(collision.asteroidPos, collision.asteroidSize);
+        var asteroidSize = _entityManager.GetComponentData<AsteroidData>(asteroid).size;
+        var asteroidPos = _entityManager.GetComponentData<Translation>(asteroid).Value;
+        var shotPos = _entityManager.GetComponentData<Translation>(shot).Value;
+
+        if (asteroidSize > 1) {
+            asteroidSpawner.SpawnAsteroidsFromAsteroid(asteroidPos, asteroidSize);
         }
-        fxManager.PlayShotHitAsteroid(collision.shotPos);
+        fxManager.PlayShotHitAsteroid(shotPos);
+
+        _entityManager.DestroyEntity(shot);
+        _entityManager.DestroyEntity(asteroid);
     }
 
-    void ResolveSpaceshipPowerUpCollision(SpaceshipPowerUpCollision collision) {
+    void ResolveSpaceshipPowerUpCollision(Entity spaceship, Entity powerUp) {
         var spaceshipSpawner = Game.instance.spaceshipSpawner;
-        spaceshipSpawner.OnSpaceshipPickUpPowerUp(collision.powerUpType);
+        var powerUpType = _entityManager.GetComponentData<PowerUpData>(powerUp).type;
+
+        spaceshipSpawner.OnSpaceshipPickUpPowerUp(powerUpType);
+
+        _entityManager.DestroyEntity(powerUp);
     }
 
-    public void OnSpaceshipCollidedWithAsteroid(Vector3 asteroidPos, int asteroidSize, Vector3 spaceshipPos) {
-        _spaceshipAsteroidCollisionsQueue.Enqueue(new SpaceshipAsteroidCollision(asteroidPos, asteroidSize, spaceshipPos));
+    void ResolveBombAsteroidCollision(Entity bomb, Entity asteroid) {
+        _entityManager.DestroyEntity(asteroid);
     }
 
-    public void OnShotCollidedWithAsteroid(Vector3 asteroidPos, int asteroidSize, Vector3 shotPos) {
-        _shotAsteroidCollisionsQueue.Enqueue(new ShotAsteroidCollision(asteroidPos, asteroidSize, shotPos));
+    public void OnSpaceshipCollidedWithAsteroid(Entity spaceship, Entity asteroid) {
+        _spaceshipAsteroidCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(spaceship, asteroid));
     }
 
-    public void OnSpaceshipCollidedWithPowerUp(PowerUpType powerUpType) {
-        _spaceshipPowerUpCollisionsQueue.Enqueue(new SpaceshipPowerUpCollision(powerUpType));
+    public void OnShotCollidedWithAsteroid(Entity shot, Entity asteroid) {
+        _shotAsteroidCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(shot, asteroid));
     }
-}
 
-struct SpaceshipAsteroidCollision
-{
-    public Vector3 asteroidPos;
-    public int asteroidSize;
-    public Vector3 spaceshipPos;
-
-    public SpaceshipAsteroidCollision(Vector3 asteroidPos, int asteroidSize, Vector3 spaceshipPos) {
-        this.asteroidPos = asteroidPos;
-        this.asteroidSize = asteroidSize;
-        this.spaceshipPos = spaceshipPos;
+    public void OnSpaceshipCollidedWithPowerUp(Entity spaceship, Entity powerUp) {
+        _spaceshipPowerUpCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(spaceship, powerUp));
     }
-}
 
-struct ShotAsteroidCollision
-{
-    public Vector3 asteroidPos;
-    public int asteroidSize;
-    public Vector3 shotPos;
-
-    public ShotAsteroidCollision(Vector3 asteroidPos, int asteroidSize, Vector3 shotPos) {
-        this.asteroidPos = asteroidPos;
-        this.asteroidSize = asteroidSize;
-        this.shotPos = shotPos;
-    }
-}
-
-struct SpaceshipPowerUpCollision
-{
-    public PowerUpType powerUpType;
-
-    public SpaceshipPowerUpCollision(PowerUpType powerUpType) {
-        this.powerUpType = powerUpType;
+    public void OnBombCollidedWithAsteroid(Entity bomb, Entity asteroid) {
+        _bombAsteroidCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(bomb, asteroid));
     }
 }

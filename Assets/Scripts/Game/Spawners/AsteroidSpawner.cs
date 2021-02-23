@@ -15,6 +15,7 @@ public class AsteroidSpawner : MonoBehaviour
     Entity _mediumAsteroidEntityPrefab;
     Entity _smallAsteroidEntityPrefab;
     BlobAssetStore _blobAssetStore;
+    List<Entity> _asteroids = new List<Entity>();
 
     const float ASTEROID_BIG_SPEED = 10;
 
@@ -50,6 +51,8 @@ public class AsteroidSpawner : MonoBehaviour
     void SpawnAsteroid(Vector3 pos, int size) {
         var prefab = GetEntityPrefabWithSize(size);
         Entity asteroid = _entityManager.Instantiate(prefab);
+        _entityManager.SetName(asteroid, "Asteroid");
+
 
         var translation = new Translation() {
             Value = pos
@@ -67,6 +70,8 @@ public class AsteroidSpawner : MonoBehaviour
             Value = quaternion.Euler(0, 0, UnityEngine.Random.Range(0, 360f))
         };
         _entityManager.AddComponentData(asteroid, rotation);
+
+        _asteroids.Add(asteroid);
     }
 
     Vector3 GetRandomScreenPosition() {

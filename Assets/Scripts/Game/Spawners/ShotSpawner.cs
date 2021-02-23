@@ -27,6 +27,7 @@ public class ShotSpawner : MonoBehaviour
 
     public void Spawn(Vector3 pos, float angle, float speed) {
         Entity shot = _entityManager.Instantiate(_shotEntityPrefab);
+        _entityManager.SetName(shot, "Shot");
 
         var translation = new Translation() {
             Value = pos

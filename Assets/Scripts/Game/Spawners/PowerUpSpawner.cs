@@ -24,7 +24,12 @@ public class PowerUpSpawner : MonoBehaviour
 
     IEnumerator SchedulePowerUpCreation() {
         yield return new WaitForSeconds(TIME_TO_CREATE);
-        SpawnPowerUpAtRandomPos(PowerUpType.Shield);
+        SpawnPowerUpAtRandomPos(GetRandomPowerUpType());
+    }
+
+    PowerUpType[] _powerUpTypes = new PowerUpType[] { PowerUpType.Bomb, PowerUpType.Shield };
+    private PowerUpType GetRandomPowerUpType() {
+        return _powerUpTypes[Random.Range(0, _powerUpTypes.Length)];
     }
 
     private void OnDestroy() {
@@ -37,6 +42,7 @@ public class PowerUpSpawner : MonoBehaviour
 
     void SpawnPowerUp(Vector3 pos, PowerUpType type) {
         Entity powerUp = _entityManager.Instantiate(_powerUpEntityPrefab);
+        _entityManager.SetName(powerUp, "Power Up");
 
         var translation = new Translation() {
             Value = pos
