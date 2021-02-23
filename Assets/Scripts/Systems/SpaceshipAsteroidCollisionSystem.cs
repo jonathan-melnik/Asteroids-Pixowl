@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -48,7 +49,8 @@ public class SpaceshipAsteroidCollisionSystem : JobComponentSystem
             ecb.DestroyEntity(asteroid);
             ecb.DestroyEntity(spaceship);
             var asteroidPos = allTranslations[asteroid].Value;
-            Game.instance.OnSpaceshipCollidedWithAsteroid(asteroidPos, allAsteroids[asteroid].size);
+            var spaceshipPos = allTranslations[spaceship].Value;
+            Game.instance.collisionManager.OnSpaceshipCollidedWithAsteroid(asteroidPos, allAsteroids[asteroid].size, spaceshipPos);
         }
     }
 

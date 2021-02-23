@@ -48,7 +48,8 @@ public class ShotAsteroidCollisionSystem : JobComponentSystem
             ecb.DestroyEntity(asteroid);
             ecb.DestroyEntity(shot);
             var asteroidPos = allTranslations[asteroid].Value;
-            Game.instance.OnShotCollidedWithAsteroid(asteroidPos, asteroidData.size);
+            var shotPos = allTranslations[shot].Value;
+            Game.instance.collisionManager.OnShotCollidedWithAsteroid(asteroidPos, asteroidData.size, shotPos);
         }
     }
 

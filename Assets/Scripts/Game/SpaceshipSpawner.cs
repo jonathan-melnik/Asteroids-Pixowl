@@ -1,10 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
-using Unity.Mathematics;
-using Unity.Transforms;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class SpaceshipSpawner : MonoBehaviour
 {
@@ -49,14 +45,14 @@ public class SpaceshipSpawner : MonoBehaviour
 
     public void SpawnSpaceship() {
         _spaceshipEntity = _entityManager.Instantiate(_spaceshipEntityPrefab);
-
         Game.instance.uiManager.hyperspace.Reset(1);
 
         thrusters.Activate();
         shield.ActivateAtSpawn();
     }
 
-    public void OnSpaceshipDestroyed() {
+    public void OnSpaceshipDestroyed(Vector3 spaceshipPos) {
+        Game.instance.fxManager.PlaySpaceshipExplosion(spaceshipPos);
         _spaceshipEntity = Entity.Null;
         thrusters.Deactivate();
     }

@@ -44,7 +44,7 @@ public class SpaceshipPowerUpCollisionSystem : JobComponentSystem
         void OnCollision(Entity powerUp, Entity spaceship) {
             ecb.DestroyEntity(powerUp);
             var powerUpPos = allTranslations[powerUp].Value;
-            Game.instance.OnSpaceshipCollidedWithPowerUp(allPowerUps[powerUp].type);
+            Game.instance.collisionManager.OnSpaceshipCollidedWithPowerUp(allPowerUps[powerUp].type);
         }
     }
 

@@ -15,7 +15,6 @@ public class AsteroidSpawner : MonoBehaviour
     Entity _mediumAsteroidEntityPrefab;
     Entity _smallAsteroidEntityPrefab;
     BlobAssetStore _blobAssetStore;
-    Queue<AsteroidCreationInfo> _spawnAsteroidQueue = new Queue<AsteroidCreationInfo>();
 
     const float ASTEROID_BIG_SPEED = 10;
 
@@ -33,13 +32,6 @@ public class AsteroidSpawner : MonoBehaviour
         _blobAssetStore.Dispose();
     }
 
-    void Update() {
-        while (_spawnAsteroidQueue.Count > 0) {
-            var info = _spawnAsteroidQueue.Dequeue();
-            SpawnAsteroid(info.pos, info.size);
-        }
-    }
-
     public void SpawnInitialAsteroids() {
         SpawnAsteroidAtRandomPos();
         SpawnAsteroidAtRandomPos();
@@ -50,10 +42,9 @@ public class AsteroidSpawner : MonoBehaviour
         SpawnAsteroid(GetRandomScreenPosition(), size);
     }
 
-    public void ScheduleSpawnAsteroidsFromAsteroid(Vector3 asteroidPos, int asteroidSize) {
-        var info = new AsteroidCreationInfo(asteroidPos, asteroidSize - 1);
-        _spawnAsteroidQueue.Enqueue(info);
-        _spawnAsteroidQueue.Enqueue(info);
+    public void SpawnAsteroidsFromAsteroid(Vector3 asteroidPos, int asteroidSize) {
+        SpawnAsteroid(asteroidPos, asteroidSize - 1);
+        SpawnAsteroid(asteroidPos, asteroidSize - 1);
     }
 
     void SpawnAsteroid(Vector3 pos, int size) {
@@ -93,15 +84,5 @@ public class AsteroidSpawner : MonoBehaviour
         }
         return _smallAsteroidEntityPrefab;
     }
-
-    struct AsteroidCreationInfo
-    {
-        public Vector3 pos;
-        public int size;
-
-        public AsteroidCreationInfo(Vector3 pos, int size) {
-            this.pos = pos;
-            this.size = size;
-        }
-    }
 }
+
