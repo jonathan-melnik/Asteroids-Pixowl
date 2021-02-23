@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,6 +13,7 @@ public class Game : MonoBehaviour
     public FxManager fxManager;
     public int lives = 1;
     bool _checkRespawnOrGameOver = false;
+    bool _isRestarting = false;
     public static Game instance;
 
     private void Awake() {
@@ -20,7 +22,7 @@ public class Game : MonoBehaviour
         ScreenCorners.LowerLeft.Data = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
         ScreenCorners.UpperRight.Data = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, 0));
 
-        cameraScreenFade.FadeIn(0.4f);
+        cameraScreenFade.FadeIn(CameraScreenFade.FADE_IN_TIME);
     }
 
     void Start() {
@@ -30,6 +32,10 @@ public class Game : MonoBehaviour
     }
 
     private void Update() {
+        if (_isRestarting) {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.R)) { // Reiniciar juego
             Retry();
         }
@@ -41,8 +47,9 @@ public class Game : MonoBehaviour
         if (_checkRespawnOrGameOver) {
             uiManager.lives.SetCount(lives);
             _checkRespawnOrGameOver = false;
+            spaceshipSpawner.OnSpaceshipDestroyed();
             if (lives > 0) {
-                spaceshipSpawner.OnSpaceshipDestroyed();
+                spaceshipSpawner.ScheduleRespawn();
             } else {
                 uiManager.ShowGameOver();
             }
@@ -64,7 +71,19 @@ public class Game : MonoBehaviour
         }
     }
 
+    public void OnSpaceshipCollidedWithPowerUp(PowerUpType powerUpType) {
+        spaceshipSpawner.OnSpaceshipPickUpPowerUp(powerUpType);
+    }
+
     public void Retry() {
+        float fadeOutTime = CameraScreenFade.FADE_OUT_TIME;
+        cameraScreenFade.FadeOut(fadeOutTime);
+        _isRestarting = true;
+        StartCoroutine(RestartAfterFadeOut(fadeOutTime));
+    }
+
+    IEnumerator RestartAfterFadeOut(float fadeOutTime) {
+        yield return new WaitForSeconds(fadeOutTime);
         World.DisposeAllWorlds();
         DefaultWorldInitialization.Initialize("Default World", false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

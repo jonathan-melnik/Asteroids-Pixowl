@@ -1,10 +1,11 @@
-Vidas
 Pantalla victoria
 Power Ups(otro disparo, shield
 UFO
 Sonidos
+Diferente velocidad para cada asteroide(chequear el gdd)
 
 LISTO Comenzar invencible
 LISTO Fx Hyperspace
 LISTO Warp-cambio de escena
 LISTO Pantalla gameover
+LISTO Vidas

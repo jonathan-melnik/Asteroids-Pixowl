@@ -6,6 +6,9 @@ public class CameraScreenFade : MonoBehaviour
 {
     public Material material;
     bool _isFading = false;
+    public const float FADE_IN_TIME = 0.4f;
+    public const float FADE_OUT_TIME = 0.4f;
+
 
     void OnRenderImage(RenderTexture src, RenderTexture dest) {
         if (_isFading) {

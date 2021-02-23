@@ -27,7 +27,7 @@ public class MainMenu : MonoBehaviour
 
     IEnumerator FadeOutWithDelay(float delay) {
         yield return new WaitForSeconds(delay);
-        float fadeOutDelay = 0.4f;
+        float fadeOutDelay = CameraScreenFade.FADE_OUT_TIME;
         cameraScreenFade.FadeOut(fadeOutDelay);
         yield return new WaitForSeconds(fadeOutDelay);
         LoadGame();
