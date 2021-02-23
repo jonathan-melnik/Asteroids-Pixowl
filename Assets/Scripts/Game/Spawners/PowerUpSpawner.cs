@@ -27,7 +27,7 @@ public class PowerUpSpawner : MonoBehaviour
         SpawnPowerUpAtRandomPos(GetRandomPowerUpType());
     }
 
-    PowerUpType[] _powerUpTypes = new PowerUpType[] { PowerUpType.Bomb, PowerUpType.Shield };
+    PowerUpType[] _powerUpTypes = new PowerUpType[] { PowerUpType.Bomb, PowerUpType.Shield, PowerUpType.HomingMissile };
     private PowerUpType GetRandomPowerUpType() {
         return _powerUpTypes[Random.Range(0, _powerUpTypes.Length)];
     }

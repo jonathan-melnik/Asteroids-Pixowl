@@ -19,7 +19,7 @@ public class HomingMissileSystem : JobComponentSystem
             data.timer += dt;
             if (data.timer >= data.timeToDie) {
                 ecb.DestroyEntity(entity);
-                Game.instance.homingMissileManager.OnEntitySelfDestroyed(entity);
+                Game.instance.homingMissileManager.OnMissileSelfDestroyed(entity);
             }
         }).Run();
 

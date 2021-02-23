@@ -19,7 +19,7 @@ public class ShotAsteroidCollisionSystem : JobComponentSystem
         _stepPhysicsWorld = World.GetOrCreateSystem<StepPhysicsWorld>();
     }
 
-    public struct SpaceshipAsteroidCollisionSystemJob : ITriggerEventsJob
+    public struct ShotAsteroidCollisionSystemJob : ITriggerEventsJob
     {
         [ReadOnly] public ComponentDataFromEntity<ShotTag> allShots;
         [ReadOnly] public ComponentDataFromEntity<AsteroidData> allAsteroids;
@@ -41,7 +41,7 @@ public class ShotAsteroidCollisionSystem : JobComponentSystem
     }
 
     protected override JobHandle OnUpdate(JobHandle inputDeps) {
-        var job = new SpaceshipAsteroidCollisionSystemJob();
+        var job = new ShotAsteroidCollisionSystemJob();
         job.allShots = GetComponentDataFromEntity<ShotTag>(true);
         job.allAsteroids = GetComponentDataFromEntity<AsteroidData>(true);
 

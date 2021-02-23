@@ -19,7 +19,7 @@ public class HomingMissileAsteroidCollisionSystem : JobComponentSystem
         _stepPhysicsWorld = World.GetOrCreateSystem<StepPhysicsWorld>();
     }
 
-    public struct SpaceshipAsteroidCollisionSystemJob : ITriggerEventsJob
+    public struct HomingMissileAsteroidCollisionSystemJob : ITriggerEventsJob
     {
         [ReadOnly] public ComponentDataFromEntity<HomingMissileTag> allMissiles;
         [ReadOnly] public ComponentDataFromEntity<AsteroidData> allAsteroids;
@@ -34,14 +34,13 @@ public class HomingMissileAsteroidCollisionSystem : JobComponentSystem
                 OnCollision(entityB, entityA);
             }
         }
-
-        void OnCollision(Entity asteroid, Entity shot) {
-            Game.instance.collisionManager.OnHomingMissileCollidedWithAsteroid(shot, asteroid);
+        void OnCollision(Entity asteroid, Entity homingMissile) {
+            Game.instance.collisionManager.OnHomingMissileCollidedWithAsteroid(homingMissile, asteroid);
         }
     }
 
     protected override JobHandle OnUpdate(JobHandle inputDeps) {
-        var job = new SpaceshipAsteroidCollisionSystemJob();
+        var job = new HomingMissileAsteroidCollisionSystemJob();
         job.allMissiles = GetComponentDataFromEntity<HomingMissileTag>(true);
         job.allAsteroids = GetComponentDataFromEntity<AsteroidData>(true);
 

@@ -35,8 +35,8 @@ public class AsteroidManager : MonoBehaviour
 
     public void SpawnInitialAsteroids() {
         SpawnAsteroidAtRandomPos();
-        SpawnAsteroidAtRandomPos();
-        SpawnAsteroidAtRandomPos();
+        //SpawnAsteroidAtRandomPos();
+        //SpawnAsteroidAtRandomPos();
     }
 
     void SpawnAsteroidAtRandomPos(int size = 3) {
@@ -94,9 +94,11 @@ public class AsteroidManager : MonoBehaviour
         _asteroids.Remove(asteroid);
     }
 
-    public int GetRandomAsteroidEntityIndex() {
-        var asteroid = _asteroids[UnityEngine.Random.Range(0, _asteroids.Count)];
-        return asteroid.Index;
+    public Entity GetRandomAsteroidEntity() {
+        if (_asteroids.Count == 0) {
+            return Entity.Null;
+        }
+        return _asteroids[UnityEngine.Random.Range(0, _asteroids.Count)];
     }
 }
 

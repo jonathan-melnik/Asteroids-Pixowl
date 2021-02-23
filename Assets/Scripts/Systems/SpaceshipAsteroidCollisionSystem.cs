@@ -23,7 +23,6 @@ public class SpaceshipAsteroidCollisionSystem : JobComponentSystem
     {
         [ReadOnly] public ComponentDataFromEntity<SpaceshipTag> allSpaceships;
         [ReadOnly] public ComponentDataFromEntity<AsteroidData> allAsteroids;
-
         public void Execute(TriggerEvent triggerEvent) {
             Entity entityA = triggerEvent.EntityA;
             Entity entityB = triggerEvent.EntityB;

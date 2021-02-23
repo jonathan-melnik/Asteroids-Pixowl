@@ -8,6 +8,9 @@ public class FxManager : MonoBehaviour
     public ParticleSystem spaceshipExplosion;
     public ParticleSystem bombExplosion;
     public ParticleSystem shotHitAsteroid;
+    public ParticleSystem homingMissileHitAsteroid;
+    public ParticleSystem homingMissileSelfDestroyed;
+    public PowerUpTextFx powerUpTextPrefab;
 
     public void PlayHyperspace(Vector3 fromPos, Vector3 toPos) {
         hyperspace.transform.position = fromPos;
@@ -28,5 +31,21 @@ public class FxManager : MonoBehaviour
     public void PlayBombExplosion(Vector3 pos) {
         bombExplosion.transform.position = pos;
         bombExplosion.Play();
+    }
+
+    public void PlayHomingMissileHitAsteroid(Vector3 pos) {
+        homingMissileHitAsteroid.transform.position = pos;
+        homingMissileHitAsteroid.Play();
+    }
+
+    public void PlayHomingMissileSelfDestroyed(Vector3 pos) {
+        homingMissileSelfDestroyed.transform.position = pos;
+        homingMissileSelfDestroyed.Play();
+    }
+
+    public void ShowPowerUpText(Vector3 pos, PowerUpType powerUpType) {
+        var powerUpText = Instantiate(powerUpTextPrefab);
+        powerUpText.transform.position = pos;
+        powerUpText.Show(powerUpType);
     }
 }

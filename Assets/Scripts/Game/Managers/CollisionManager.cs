@@ -26,7 +26,7 @@ public class CollisionManager : MonoBehaviour
         _fxManager = Game.instance.fxManager;
     }
 
-    private void Update() {
+    private void LateUpdate() {
         while (_spaceshipAsteroidCollisionsQueue.Count > 0) {
             var pair = _spaceshipAsteroidCollisionsQueue.Dequeue();
             ResolveSpaceshipAsteroidCollision(pair.Item1, pair.Item2);
@@ -62,11 +62,11 @@ public class CollisionManager : MonoBehaviour
         if (asteroidSize > 1) {
             _asteroidManager.SpawnAsteroidsFromAsteroid(asteroidPos, asteroidSize);
         }
-        _spaceshipManager.OnSpaceshipDestroyed(spaceshipPos);
 
         _entityManager.DestroyEntity(asteroid);
         _entityManager.DestroyEntity(spaceship);
 
+        _spaceshipManager.OnSpaceshipDestroyed(spaceshipPos);
         _asteroidManager.OnAsteroidDestroyed(asteroid);
 
         Game.instance.DecreaseLives();
@@ -90,8 +90,9 @@ public class CollisionManager : MonoBehaviour
 
     void ResolveSpaceshipPowerUpCollision(Entity spaceship, Entity powerUp) {
         var powerUpType = _entityManager.GetComponentData<PowerUpData>(powerUp).type;
-
+        var powerUpPos = _entityManager.GetComponentData<Translation>(powerUp).Value;
         _spaceshipManager.OnSpaceshipPickUpPowerUp(powerUpType);
+        _fxManager.ShowPowerUpText(powerUpPos, powerUpType);
 
         _entityManager.DestroyEntity(powerUp);
     }
@@ -103,6 +104,16 @@ public class CollisionManager : MonoBehaviour
     }
 
     void ResolveHomingMissileAsteroidCollision(Entity missile, Entity asteroid) {
+        var asteroidSize = _entityManager.GetComponentData<AsteroidData>(asteroid).size;
+        var asteroidPos = _entityManager.GetComponentData<Translation>(asteroid).Value;
+        var missilePos = _entityManager.GetComponentData<Translation>(missile).Value;
+
+        if (asteroidSize > 1) {
+            _asteroidManager.SpawnAsteroidsFromAsteroid(asteroidPos, asteroidSize);
+        }
+
+        _fxManager.PlayHomingMissileHitAsteroid(missilePos);
+
         _entityManager.DestroyEntity(asteroid);
         _entityManager.DestroyEntity(missile);
 
