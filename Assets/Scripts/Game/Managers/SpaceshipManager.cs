@@ -3,14 +3,14 @@ using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
 
-public class SpaceshipSpawner : MonoBehaviour
+public class SpaceshipManager : MonoBehaviour
 {
     public GameObject spaceshipPrefab;
     public SpaceshipThrusters thrusters;
     public SpaceshipShield shield;
     EntityManager _entityManager;
     Entity _spaceshipEntityPrefab;
-    Entity _spaceshipEntity = Entity.Null;
+    Entity _spaceship = Entity.Null;
     BlobAssetStore _blobAssetStore;
     float _timerRespawn = 0;
 
@@ -40,8 +40,8 @@ public class SpaceshipSpawner : MonoBehaviour
     }
 
     public void SpawnSpaceship() {
-        _spaceshipEntity = _entityManager.Instantiate(_spaceshipEntityPrefab);
-        _entityManager.SetName(_spaceshipEntity, "Spaceship");
+        _spaceship = _entityManager.Instantiate(_spaceshipEntityPrefab);
+        _entityManager.SetName(_spaceship, "Spaceship");
         Game.instance.uiManager.hyperspace.Reset(1);
 
         thrusters.Activate();
@@ -50,7 +50,7 @@ public class SpaceshipSpawner : MonoBehaviour
 
     public void OnSpaceshipDestroyed(Vector3 spaceshipPos) {
         Game.instance.fxManager.PlaySpaceshipExplosion(spaceshipPos);
-        _spaceshipEntity = Entity.Null;
+        _spaceship = Entity.Null;
         thrusters.Deactivate();
     }
 
@@ -73,7 +73,7 @@ public class SpaceshipSpawner : MonoBehaviour
     }
 
     public Vector3 GetSpaceshipPos() {
-        return _entityManager.GetComponentData<Translation>(_spaceshipEntity).Value;
+        return _entityManager.GetComponentData<Translation>(_spaceship).Value;
     }
 
 }

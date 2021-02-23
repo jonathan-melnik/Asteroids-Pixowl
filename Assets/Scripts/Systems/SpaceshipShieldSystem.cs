@@ -16,7 +16,7 @@ public class SpaceshipShieldSystem : JobComponentSystem
             .WithAll<SpaceshipTag>()
             .ForEach((in Translation tr) =>
         {
-            Game.instance.spaceshipSpawner.shield.OnSpaceshipEntityMoved(tr.Value);
+            Game.instance.spaceshipManager.shield.OnSpaceshipEntityMoved(tr.Value);
         }).Run();
 
         return default;

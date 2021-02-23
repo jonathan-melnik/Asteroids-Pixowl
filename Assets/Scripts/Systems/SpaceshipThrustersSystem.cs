@@ -12,7 +12,7 @@ public class SpaceshipThrustersSystem : JobComponentSystem
             .WithoutBurst()
             .ForEach((in Translation tr, in Rotation rot, in MovementData movement) =>
         {
-            var thrusters = Game.instance.spaceshipSpawner.thrusters;
+            var thrusters = Game.instance.spaceshipManager.thrusters;
             thrusters.OnSpaceshipEntityMoved(tr.Value, rot.Value);
             thrusters.OnSpaceshipEntityIsThrusting(movement.accel > 0);
         }).Run();

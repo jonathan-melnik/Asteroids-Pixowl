@@ -5,13 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
-    public AsteroidSpawner asteroidSpawner;
+    public AsteroidManager asteroidManager;
     public ShotSpawner shotSpawner;
-    public SpaceshipSpawner spaceshipSpawner;
+    public SpaceshipManager spaceshipManager;
     public BombSpawner bombSpawner;
     public UIManager uiManager;
     public CameraScreenFade cameraScreenFade;
     public CollisionManager collisionManager;
+    public HomingMissileManager homingMissileManager;
     public FxManager fxManager;
     [SerializeField] int lives = 1;
     bool _checkRespawnOrGameOver = false;
@@ -28,8 +29,8 @@ public class Game : MonoBehaviour
     }
 
     void Start() {
-        spaceshipSpawner.SpawnSpaceship();
-        asteroidSpawner.SpawnInitialAsteroids();
+        spaceshipManager.SpawnSpaceship();
+        asteroidManager.SpawnInitialAsteroids();
         uiManager.lives.SetCount(lives);
     }
 
@@ -47,7 +48,7 @@ public class Game : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.B)) {
-            bombSpawner.Spawn(spaceshipSpawner.GetSpaceshipPos());
+            bombSpawner.Spawn(spaceshipManager.GetSpaceshipPos());
         }
     }
 
@@ -75,7 +76,7 @@ public class Game : MonoBehaviour
         lives--;
         uiManager.lives.SetCount(lives);
         if (lives > 0) {
-            spaceshipSpawner.ScheduleRespawn();
+            spaceshipManager.ScheduleRespawn();
         } else {
             uiManager.ShowGameOver();
         }

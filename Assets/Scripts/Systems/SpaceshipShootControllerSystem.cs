@@ -18,7 +18,12 @@ public class SpaceshipShootControllerSystem : JobComponentSystem
                     float angle = -movement.angle + math.radians(movement.angleOffset);
                     float3 dir = new float3(math.cos(angle), math.sin(angle), 0);
                     float3 pos = tr.Value + dir * shot.offset;
-                    Game.instance.shotSpawner.Spawn(pos, angle, shot.speed);
+
+                    if (shot.type == ShotType.Normal) {
+                        Game.instance.shotSpawner.Spawn(pos, angle, shot.speed);
+                    } else if (shot.type == ShotType.HomingMissile) {
+                        Game.instance.homingMissileManager.Spawn(pos, angle, shot.speed);
+                    }
                 }
             }).Run();
 

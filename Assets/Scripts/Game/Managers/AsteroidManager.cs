@@ -5,7 +5,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
-public class AsteroidSpawner : MonoBehaviour
+public class AsteroidManager : MonoBehaviour
 {
     public GameObject bigAsteroidPrefab;
     public GameObject mediumAsteroidPrefab;
@@ -88,6 +88,15 @@ public class AsteroidSpawner : MonoBehaviour
             return _mediumAsteroidEntityPrefab;
         }
         return _smallAsteroidEntityPrefab;
+    }
+
+    public void OnAsteroidDestroyed(Entity asteroid) {
+        _asteroids.Remove(asteroid);
+    }
+
+    public int GetRandomAsteroidEntityIndex() {
+        var asteroid = _asteroids[UnityEngine.Random.Range(0, _asteroids.Count)];
+        return asteroid.Index;
     }
 }
 

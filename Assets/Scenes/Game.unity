@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 87759268}
   - component: {fileID: 87759267}
   m_Layer: 0
-  m_Name: AsteroidSpawner
+  m_Name: AsteroidManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1210,7 +1210,7 @@ GameObject:
   - component: {fileID: 830274425}
   - component: {fileID: 830274426}
   m_Layer: 0
-  m_Name: SpaceshipSpawner
+  m_Name: SpaceshipManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1291,6 +1291,51 @@ Transform:
   m_Father: {fileID: 1495092062}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &844034193
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 844034194}
+  - component: {fileID: 844034195}
+  m_Layer: 0
+  m_Name: HomingMissileManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &844034194
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844034193}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1495092062}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &844034195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844034193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6005067a0bed4e244853f0cb3fe15814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missilePrefab: {fileID: 2205998536935695619, guid: 5e83b51478d77b64abb22d1f70e0a3f8,
+    type: 3}
 --- !u!1 &955926019
 GameObject:
   m_ObjectHideFlags: 0
@@ -2122,7 +2167,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -4, y: 6.4600067}
+  m_AnchoredPosition: {x: -4, y: 6.460022}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1115511522
@@ -3756,13 +3801,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b660642d1a770046bf470af58c3e7b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  asteroidSpawner: {fileID: 87759267}
+  asteroidManager: {fileID: 87759267}
   shotSpawner: {fileID: 2043722151}
-  spaceshipSpawner: {fileID: 830274426}
+  spaceshipManager: {fileID: 830274426}
   bombSpawner: {fileID: 821525444}
   uiManager: {fileID: 66257969}
   cameraScreenFade: {fileID: 963194229}
   collisionManager: {fileID: 832824150}
+  homingMissileManager: {fileID: 844034195}
   fxManager: {fileID: 2059142583}
   lives: 1
 --- !u!4 &1495092062
@@ -3782,6 +3828,7 @@ Transform:
   - {fileID: 579473844}
   - {fileID: 832824151}
   - {fileID: 821525443}
+  - {fileID: 844034194}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4223,7 +4270,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 963194227}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 1
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -4231,7 +4278,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!1 &2043722150
 GameObject:

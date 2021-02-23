@@ -36,7 +36,7 @@ public class SpaceshipAsteroidCollisionSystem : JobComponentSystem
         }
 
         void OnCollision(Entity asteroid, Entity spaceship) {
-            if (Game.instance.spaceshipSpawner.shield.IsActive()) {
+            if (Game.instance.spaceshipManager.shield.IsActive()) {
                 return;
             }
             Game.instance.collisionManager.OnSpaceshipCollidedWithAsteroid(spaceship, asteroid);
