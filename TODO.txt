@@ -1,3 +1,8 @@
+colision spaceship-ufo
+hacer que el ufo dispare
+colision spaceship-shot ufo
+homing missile pueden perseguir ufos
+
 Pantalla victoria
 UFO
 Sonidos
