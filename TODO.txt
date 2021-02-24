@@ -1,6 +1,5 @@
 Pantalla victoria
 Sonidos
-Diferente velocidad para cada asteroide(chequear el gdd)
 Schedulear los enemigos y powerups
 
 LISTO thrusters para el ufo

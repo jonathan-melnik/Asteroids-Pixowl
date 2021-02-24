@@ -16,8 +16,8 @@ public class AsteroidManager : MonoBehaviour
     Entity _smallAsteroidEntityPrefab;
     BlobAssetStore _blobAssetStore;
     List<Entity> _asteroids = new List<Entity>();
-
-    const float ASTEROID_BIG_SPEED = 10;
+    public float minSpeed;
+    public float maxSpeed;
 
     private void Awake() {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -62,7 +62,7 @@ public class AsteroidManager : MonoBehaviour
         float angle = math.radians(UnityEngine.Random.Range(0, 360f));
         float3 direction = new float3(math.cos(angle), math.sin(angle), 0);
         var movement = new ConstantMovementData() {
-            velocity = direction * ASTEROID_BIG_SPEED,
+            velocity = direction * UnityEngine.Random.Range(minSpeed, maxSpeed),
         };
         _entityManager.AddComponentData(asteroid, movement);
 

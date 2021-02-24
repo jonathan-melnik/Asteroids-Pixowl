@@ -18,8 +18,8 @@ public class UFOManager : MonoBehaviour
     public SpaceshipThrusters bigUFOThrustersPrefab;
     public SpaceshipThrusters smallUFOThrustersPrefab;
     Dictionary<Entity, SpaceshipThrusters> _thrustersByUFO = new Dictionary<Entity, SpaceshipThrusters>();
-
-    const float UFO_BIG_SPEED = 10f;
+    public float minSpeed;
+    public float maxSpeed;
     const float SPAWN_DELAY = 2.5f;
 
     private void Awake() {
@@ -58,8 +58,9 @@ public class UFOManager : MonoBehaviour
         float angle = math.radians(UnityEngine.Random.Range(0, 360f));
         float angleOffseted = -angle + math.radians(movement.angleOffset);
         float3 direction = new float3(math.cos(angleOffseted), math.sin(angleOffseted), 0);
-        movement.velocity = direction * UFO_BIG_SPEED;
+        movement.velocity = direction * UnityEngine.Random.Range(minSpeed, maxSpeed);
         movement.angle = angle;
+        movement.maxSpeed = maxSpeed;
         _entityManager.AddComponentData(ufo, movement);
 
         var control = _entityManager.GetComponentData<UFOControlData>(ufo);
