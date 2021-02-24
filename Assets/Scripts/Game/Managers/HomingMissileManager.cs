@@ -13,7 +13,7 @@ public class HomingMissileManager : MonoBehaviour
     Entity _missileEntityPrefab;
     List<Entity> _missiles = new List<Entity>();
     BlobAssetStore _blobAssetStore;
-    List<Tuple<Entity, Entity>> _missileAsteroidPairs = new List<Tuple<Entity, Entity>>();
+    List<Tuple<Entity, Entity>> _missileTargetPairs = new List<Tuple<Entity, Entity>>();
     float _angleOffset = math.radians(-90);
     int ammo;
 
@@ -37,22 +37,23 @@ public class HomingMissileManager : MonoBehaviour
     void FixedUpdate() {
         bool missingTargets = false;
         // Hago que los misiles busquen su target
-        foreach (var pair in _missileAsteroidPairs) {
+        foreach (var pair in _missileTargetPairs) {
             var missile = pair.Item1;
-            var asteroid = pair.Item2;
+            var target = pair.Item2;
 
-            if (!_entityManager.Exists(asteroid)) {
+            // Puede pasar que el target haya sido destruido, en ese caso hago retargeting
+            if (!_entityManager.Exists(target)) {
                 missingTargets = true;
                 continue;
             }
 
             var movement = _entityManager.GetComponentData<ConstantMovementData>(missile);
             var missilePos = _entityManager.GetComponentData<Translation>(missile).Value;
-            var asteroidPos = _entityManager.GetComponentData<Translation>(asteroid).Value;
+            var targetPos = _entityManager.GetComponentData<Translation>(target).Value;
 
             float speed = math.length(movement.velocity);
             float3 dir = movement.velocity / speed;
-            float3 targetDir = math.normalize(asteroidPos - missilePos);
+            float3 targetDir = math.normalize(targetPos - missilePos);
             dir += (targetDir - dir) * EASE_VALUE;
             dir = math.normalize(dir);
             movement.velocity = dir * speed;
@@ -93,9 +94,9 @@ public class HomingMissileManager : MonoBehaviour
 
         _missiles.Add(missile);
 
-        var asteroid = Game.instance.asteroidManager.GetRandomAsteroidEntity();
-        if (asteroid != Entity.Null) {
-            _missileAsteroidPairs.Add(new Tuple<Entity, Entity>(missile, asteroid));
+        var target = GetRandomTarget();
+        if (target != Entity.Null) {
+            _missileTargetPairs.Add(new Tuple<Entity, Entity>(missile, target));
         }
 
         ammo--;
@@ -107,37 +108,39 @@ public class HomingMissileManager : MonoBehaviour
     public void OnMissileDestroyed(Entity missile) {
         _missiles.Remove(missile);
 
-        var asteroidTarget = Entity.Null;
-        for (int i = 0; i < _missileAsteroidPairs.Count; i++) {
-            if (_missileAsteroidPairs[i].Item1 == missile) {
-                asteroidTarget = _missileAsteroidPairs[i].Item2;
-                _missileAsteroidPairs.RemoveAt(i);
+        var target = Entity.Null;
+        for (int i = 0; i < _missileTargetPairs.Count; i++) {
+            if (_missileTargetPairs[i].Item1 == missile) {
+                target = _missileTargetPairs[i].Item2;
+                _missileTargetPairs.RemoveAt(i);
                 break;
             }
         }
 
-        // Remuevo los pares de los misiles que estaban siguiendo al mismo asteroid
-        var newPairs = new List<Tuple<Entity, Entity>>();
-        if (asteroidTarget != Entity.Null) {
-            for (int i = 0; i < _missileAsteroidPairs.Count; i++) {
-                if (_missileAsteroidPairs[i].Item2 == asteroidTarget) {
-                    var currMissile = _missileAsteroidPairs[i].Item1;
-                    _missileAsteroidPairs.RemoveAt(i);
+        // Remuevo los pares de los misiles que estaban siguiendo al mismo targets
+        bool needToRetargetMissiles = false;
+        if (target != Entity.Null) {
+            for (int i = 0; i < _missileTargetPairs.Count; i++) {
+                if (_missileTargetPairs[i].Item2 == target) {
+                    _missileTargetPairs.RemoveAt(i);
                     i--;
+                    needToRetargetMissiles = true;
                 }
             }
         }
 
-        StartCoroutine(ScheduleRetargetMissiles());
+        if (needToRetargetMissiles) {
+            StartCoroutine(ScheduleRetargetMissiles());
+        }
     }
 
     public void OnMissileSelfDestroyed(Entity missile) {
         if (_missiles.IndexOf(missile) >= 0) {
             _missiles.Remove(missile);
 
-            for (int i = 0; i < _missileAsteroidPairs.Count; i++) {
-                if (_missileAsteroidPairs[i].Item1 == missile) {
-                    _missileAsteroidPairs.RemoveAt(i);
+            for (int i = 0; i < _missileTargetPairs.Count; i++) {
+                if (_missileTargetPairs[i].Item1 == missile) {
+                    _missileTargetPairs.RemoveAt(i);
                     break;
                 }
             }
@@ -156,7 +159,7 @@ public class HomingMissileManager : MonoBehaviour
         var newPairs = new List<Tuple<Entity, Entity>>();
         foreach (var missile in _missiles) {
             var found = false;
-            foreach (var pair in _missileAsteroidPairs) {
+            foreach (var pair in _missileTargetPairs) {
                 if (pair.Item1 == missile) {
                     found = true;
                     break;
@@ -164,20 +167,36 @@ public class HomingMissileManager : MonoBehaviour
             }
 
             if (!found) {
-                var asteroid = Game.instance.asteroidManager.GetRandomAsteroidEntity();
-                if (asteroid != Entity.Null) {
-                    var newPair = new Tuple<Entity, Entity>(missile, asteroid);
+                var target = GetRandomTarget();
+                if (target != Entity.Null) {
+                    var newPair = new Tuple<Entity, Entity>(missile, target);
                     newPairs.Add(newPair);
                 }
             }
         }
 
-        _missileAsteroidPairs.AddRange(newPairs);
+        _missileTargetPairs.AddRange(newPairs);
     }
 
     public void OnPickedUpAmmo() {
         ammo += AMMO;
 
         Game.instance.spaceshipManager.SetShotType(ShotType.HomingMissile);
+    }
+
+    Entity GetRandomTarget() {
+        if (UnityEngine.Random.value < 0.5f) {
+            var asteroid = Game.instance.asteroidManager.GetRandomAsteroidEntity();
+            if (asteroid != Entity.Null) {
+                return asteroid;
+            }
+            return Game.instance.ufoManager.GetRandomUFOEntity();
+        } else {
+            var ufo = Game.instance.ufoManager.GetRandomUFOEntity();
+            if (ufo != Entity.Null) {
+                return ufo;
+            }
+            return Game.instance.asteroidManager.GetRandomAsteroidEntity();
+        }
     }
 }

@@ -14,6 +14,7 @@ public class CollisionManager : MonoBehaviour
     Queue<Tuple<Entity, Entity>> _spaceshipPowerUpCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
     Queue<Tuple<Entity, Entity>> _bombAsteroidCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
     Queue<Tuple<Entity, Entity>> _homingMissileAsteroidCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
+    Queue<Tuple<Entity, Entity>> _homingMissileUFOCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
     Queue<Tuple<Entity, Entity>> _spaceshipUFOCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
     EntityManager _entityManager;
     AsteroidManager _asteroidManager;
@@ -65,6 +66,11 @@ public class CollisionManager : MonoBehaviour
         while (_homingMissileAsteroidCollisionsQueue.Count > 0) {
             var pair = _homingMissileAsteroidCollisionsQueue.Dequeue();
             ResolveHomingMissileAsteroidCollision(pair.Item1, pair.Item2);
+        }
+
+        while (_homingMissileUFOCollisionsQueue.Count > 0) {
+            var pair = _homingMissileUFOCollisionsQueue.Dequeue();
+            ResolveHomingMissileUFOCollision(pair.Item1, pair.Item2);
         }
 
         while (_spaceshipUFOCollisionsQueue.Count > 0) {
@@ -168,6 +174,25 @@ public class CollisionManager : MonoBehaviour
         _shootManager.OnHomingMissileDestroyed(missile);
     }
 
+    void ResolveHomingMissileUFOCollision(Entity missile, Entity ufo) {
+        var ufoPos = _entityManager.GetComponentData<Translation>(ufo).Value;
+        var ufoSize = _entityManager.GetComponentData<UFOData>(ufo).size;
+        var missilePos = _entityManager.GetComponentData<Translation>(missile).Value;
+
+        if (ufoSize == 1) {
+            _fxManager.PlayUFOExplosionSmall(ufoPos);
+        } else {
+            _fxManager.PlayUFOExplosionBig(ufoPos);
+        }
+        _fxManager.PlayHomingMissileHitAsteroid(missilePos);
+
+        _entityManager.DestroyEntity(ufo);
+        _entityManager.DestroyEntity(missile);
+
+        _ufoManager.OnUFODestroyed(ufo);
+        _shootManager.OnHomingMissileDestroyed(missile);
+    }
+
     void ResolveSpaceshipUFOCollision(Entity spaceship, Entity ufo) {
         var spaceshipPos = _entityManager.GetComponentData<Translation>(spaceship).Value;
         var ufoPos = _entityManager.GetComponentData<Translation>(ufo).Value;
@@ -211,6 +236,10 @@ public class CollisionManager : MonoBehaviour
 
     public void OnHomingMissileCollidedWithAsteroid(Entity hommingMissile, Entity asteroid) {
         _homingMissileAsteroidCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(hommingMissile, asteroid));
+    }
+
+    public void OnHomingMissileCollidedWithUFO(Entity hommingMissile, Entity ufo) {
+        _homingMissileUFOCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(hommingMissile, ufo));
     }
 
     public void OnSpaceshipCollidedWithUFO(Entity spaceship, Entity ufo) {

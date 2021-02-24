@@ -1,6 +1,8 @@
 homing missile pueden perseguir ufos
 thrusters para el ufo
 	
+hacer que la bomba colisione con el ufo
+
 Pantalla victoria
 Sonidos
 Diferente velocidad para cada asteroide(chequear el gdd)
