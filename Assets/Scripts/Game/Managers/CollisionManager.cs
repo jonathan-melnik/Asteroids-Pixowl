@@ -7,15 +7,8 @@ using UnityEngine;
 
 public class CollisionManager : MonoBehaviour
 {
-    Queue<Tuple<Entity, Entity>> _spaceshipAsteroidCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
-    Queue<Tuple<Entity, Entity>> _shotAsteroidCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
-    Queue<Tuple<Entity, Entity>> _shotSpaceshipCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
-    Queue<Tuple<Entity, Entity>> _shotUFOCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
-    Queue<Tuple<Entity, Entity>> _spaceshipPowerUpCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
-    Queue<Tuple<Entity, Entity>> _bombAsteroidCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
-    Queue<Tuple<Entity, Entity>> _homingMissileAsteroidCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
-    Queue<Tuple<Entity, Entity>> _homingMissileUFOCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
-    Queue<Tuple<Entity, Entity>> _spaceshipUFOCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
+    Queue<Tuple<Entity, Entity>> _playerEnemyCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
+    Queue<Tuple<Entity, Entity>> _playerItemCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
     EntityManager _entityManager;
     AsteroidManager _asteroidManager;
     SpaceshipManager _spaceshipManager;
@@ -33,49 +26,54 @@ public class CollisionManager : MonoBehaviour
     }
 
     private void LateUpdate() {
-        while (_spaceshipAsteroidCollisionsQueue.Count > 0) {
-            var pair = _spaceshipAsteroidCollisionsQueue.Dequeue();
-            ResolveSpaceshipAsteroidCollision(pair.Item1, pair.Item2);
+        while (_playerEnemyCollisionsQueue.Count > 0) {
+            var pair = _playerEnemyCollisionsQueue.Dequeue();
+            ResolvePlayerEnemyCollision(pair.Item1, pair.Item2);
         }
 
-        while (_shotAsteroidCollisionsQueue.Count > 0) {
-            var pair = _shotAsteroidCollisionsQueue.Dequeue();
-            ResolveShotAsteroidCollision(pair.Item1, pair.Item2);
+        while (_playerItemCollisionsQueue.Count > 0) {
+            var pair = _playerItemCollisionsQueue.Dequeue();
+            ResolvePlayerItemCollision(pair.Item1, pair.Item2);
         }
+    }
 
-        while (_shotSpaceshipCollisionsQueue.Count > 0) {
-            var pair = _shotSpaceshipCollisionsQueue.Dequeue();
-            ResolveShotSpaceshipCollision(pair.Item1, pair.Item2);
+    void ResolvePlayerEnemyCollision(Entity player, Entity enemy) {
+        if (_entityManager.HasComponent<SpaceshipTag>(player)) {
+            if (!_spaceshipManager.shield.IsActive()) {
+                if (_entityManager.HasComponent<AsteroidTag>(enemy)) {
+                    ResolveSpaceshipAsteroidCollision(player, enemy);
+                } else if (_entityManager.HasComponent<UFOTag>(enemy)) {
+                    ResolveSpaceshipUFOCollision(player, enemy);
+                } else if (_entityManager.HasComponent<ShotTag>(enemy)) {
+                    ResolveSpaceshipShotCollision(player, enemy);
+                }
+            }
+        } else if (_entityManager.HasComponent<ShotTag>(player)) {
+            if (_entityManager.HasComponent<AsteroidTag>(enemy)) {
+                ResolveShotAsteroidCollision(player, enemy);
+            } else if (_entityManager.HasComponent<UFOTag>(enemy)) {
+                ResolveShotUFOCollision(player, enemy);
+            }
+        } else if (_entityManager.HasComponent<HomingMissileTag>(player)) {
+            if (_entityManager.HasComponent<AsteroidTag>(enemy)) {
+                ResolveHomingMissileAsteroidCollision(player, enemy);
+            } else if (_entityManager.HasComponent<UFOTag>(enemy)) {
+                ResolveHomingMissileUFOCollision(player, enemy);
+            }
+        } else if (_entityManager.HasComponent<BombTag>(player)) {
+            if (_entityManager.HasComponent<AsteroidTag>(enemy)) {
+                ResolveBombAsteroidCollision(player, enemy);
+            } else if (_entityManager.HasComponent<UFOTag>(enemy)) {
+                ResolveBombUFOCollision(player, enemy);
+            }
         }
+    }
 
-        while (_shotUFOCollisionsQueue.Count > 0) {
-            var pair = _shotUFOCollisionsQueue.Dequeue();
-            ResolveShotUFOCollision(pair.Item1, pair.Item2);
-        }
-
-        while (_spaceshipPowerUpCollisionsQueue.Count > 0) {
-            var pair = _spaceshipPowerUpCollisionsQueue.Dequeue();
-            ResolveSpaceshipPowerUpCollision(pair.Item1, pair.Item2);
-        }
-
-        while (_bombAsteroidCollisionsQueue.Count > 0) {
-            var pair = _bombAsteroidCollisionsQueue.Dequeue();
-            ResolveBombAsteroidCollision(pair.Item1, pair.Item2);
-        }
-
-        while (_homingMissileAsteroidCollisionsQueue.Count > 0) {
-            var pair = _homingMissileAsteroidCollisionsQueue.Dequeue();
-            ResolveHomingMissileAsteroidCollision(pair.Item1, pair.Item2);
-        }
-
-        while (_homingMissileUFOCollisionsQueue.Count > 0) {
-            var pair = _homingMissileUFOCollisionsQueue.Dequeue();
-            ResolveHomingMissileUFOCollision(pair.Item1, pair.Item2);
-        }
-
-        while (_spaceshipUFOCollisionsQueue.Count > 0) {
-            var pair = _spaceshipUFOCollisionsQueue.Dequeue();
-            ResolveSpaceshipUFOCollision(pair.Item1, pair.Item2);
+    void ResolvePlayerItemCollision(Entity player, Entity item) {
+        if (_entityManager.HasComponent<SpaceshipTag>(player)) {
+            if (_entityManager.HasComponent<PowerUpTag>(item)) {
+                ResolveSpaceshipPowerUpCollision(player, item);
+            }
         }
     }
 
@@ -114,7 +112,7 @@ public class CollisionManager : MonoBehaviour
         _asteroidManager.OnAsteroidDestroyed(asteroid);
     }
 
-    void ResolveShotSpaceshipCollision(Entity shot, Entity spaceship) {
+    void ResolveSpaceshipShotCollision(Entity spaceship, Entity shot) {
         var spaceshipPos = _entityManager.GetComponentData<Translation>(spaceship).Value;
 
         _fxManager.PlaySpaceshipExplosion(spaceshipPos);
@@ -154,6 +152,21 @@ public class CollisionManager : MonoBehaviour
         _entityManager.DestroyEntity(asteroid);
 
         _asteroidManager.OnAsteroidDestroyed(asteroid);
+    }
+
+    void ResolveBombUFOCollision(Entity bomb, Entity ufo) {
+        var ufoPos = _entityManager.GetComponentData<Translation>(ufo).Value;
+        var ufoSize = _entityManager.GetComponentData<UFOData>(ufo).size;
+
+        if (ufoSize == 1) {
+            _fxManager.PlayUFOExplosionSmall(ufoPos);
+        } else {
+            _fxManager.PlayUFOExplosionBig(ufoPos);
+        }
+
+        _entityManager.DestroyEntity(ufo);
+
+        _ufoManager.OnUFODestroyed(ufo);
     }
 
     void ResolveHomingMissileAsteroidCollision(Entity missile, Entity asteroid) {
@@ -210,39 +223,11 @@ public class CollisionManager : MonoBehaviour
         _ufoManager.OnUFODestroyed(ufo);
     }
 
-    public void OnSpaceshipCollidedWithAsteroid(Entity spaceship, Entity asteroid) {
-        _spaceshipAsteroidCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(spaceship, asteroid));
+    public void OnPlayerCollidedWithEnemy(Entity player, Entity enemy) {
+        _playerEnemyCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(player, enemy));
     }
 
-    public void OnShotCollidedWithAsteroid(Entity shot, Entity asteroid) {
-        _shotAsteroidCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(shot, asteroid));
-    }
-
-    public void OnShotCollidedWithSpaceship(Entity shot, Entity spaceship) {
-        _shotSpaceshipCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(shot, spaceship));
-    }
-
-    public void OnShotCollidedWithUFO(Entity shot, Entity ufo) {
-        _shotUFOCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(shot, ufo));
-    }
-
-    public void OnSpaceshipCollidedWithPowerUp(Entity spaceship, Entity powerUp) {
-        _spaceshipPowerUpCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(spaceship, powerUp));
-    }
-
-    public void OnBombCollidedWithAsteroid(Entity bomb, Entity asteroid) {
-        _bombAsteroidCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(bomb, asteroid));
-    }
-
-    public void OnHomingMissileCollidedWithAsteroid(Entity hommingMissile, Entity asteroid) {
-        _homingMissileAsteroidCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(hommingMissile, asteroid));
-    }
-
-    public void OnHomingMissileCollidedWithUFO(Entity hommingMissile, Entity ufo) {
-        _homingMissileUFOCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(hommingMissile, ufo));
-    }
-
-    public void OnSpaceshipCollidedWithUFO(Entity spaceship, Entity ufo) {
-        _spaceshipUFOCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(spaceship, ufo));
+    public void OnPlayerCollidedWithItem(Entity player, Entity item) {
+        _playerItemCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(player, item));
     }
 }

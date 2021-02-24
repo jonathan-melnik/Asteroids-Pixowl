@@ -8,7 +8,7 @@ using Unity.Physics.Systems;
 using Unity.Transforms;
 
 [UpdateAfter(typeof(EndFramePhysicsSystem))]
-public class SpaceshipAsteroidCollisionSystem : JobComponentSystem
+public class PlayerItemCollisionSystem : JobComponentSystem
 {
     private StepPhysicsWorld stepPhysicsWorld;
     private BuildPhysicsWorld buildPhysicsWorld;
@@ -19,33 +19,31 @@ public class SpaceshipAsteroidCollisionSystem : JobComponentSystem
         stepPhysicsWorld = World.GetOrCreateSystem<StepPhysicsWorld>();
     }
 
-    public struct SpaceshipAsteroidCollisionSystemJob : ITriggerEventsJob
+    public struct BombAsteroidCollisionSystemJob : ITriggerEventsJob
     {
-        [ReadOnly] public ComponentDataFromEntity<SpaceshipTag> allSpaceships;
-        [ReadOnly] public ComponentDataFromEntity<AsteroidData> allAsteroids;
+        [ReadOnly] public ComponentDataFromEntity<PlayerTag> allPlayers;
+        [ReadOnly] public ComponentDataFromEntity<ItemTag> allItems;
+
         public void Execute(TriggerEvent triggerEvent) {
             Entity entityA = triggerEvent.EntityA;
             Entity entityB = triggerEvent.EntityB;
 
-            if (allAsteroids.HasComponent(entityA) && allSpaceships.HasComponent(entityB)) {
+            if (allPlayers.HasComponent(entityA) && allItems.HasComponent(entityB)) {
                 OnCollision(entityA, entityB);
-            } else if (allSpaceships.HasComponent(entityA) && allAsteroids.HasComponent(entityB)) {
+            } else if (allItems.HasComponent(entityA) && allPlayers.HasComponent(entityB)) {
                 OnCollision(entityB, entityA);
             }
         }
 
-        void OnCollision(Entity asteroid, Entity spaceship) {
-            if (Game.instance.spaceshipManager.shield.IsActive()) {
-                return;
-            }
-            Game.instance.collisionManager.OnSpaceshipCollidedWithAsteroid(spaceship, asteroid);
+        void OnCollision(Entity player, Entity item) {
+            Game.instance.collisionManager.OnPlayerCollidedWithItem(player, item);
         }
     }
 
     protected override JobHandle OnUpdate(JobHandle inputDeps) {
-        var job = new SpaceshipAsteroidCollisionSystemJob();
-        job.allSpaceships = GetComponentDataFromEntity<SpaceshipTag>(true);
-        job.allAsteroids = GetComponentDataFromEntity<AsteroidData>(true);
+        var job = new BombAsteroidCollisionSystemJob();
+        job.allPlayers = GetComponentDataFromEntity<PlayerTag>(true);
+        job.allItems = GetComponentDataFromEntity<ItemTag>(true);
 
         JobHandle jobHandle = job.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, inputDeps);
         jobHandle.Complete();

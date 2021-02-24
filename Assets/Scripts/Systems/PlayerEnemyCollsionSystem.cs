@@ -8,7 +8,7 @@ using Unity.Physics.Systems;
 using Unity.Transforms;
 
 [UpdateAfter(typeof(EndFramePhysicsSystem))]
-public class BombAsteroidCollisionSystem : JobComponentSystem
+public class PlayerEnemyCollisionSystem : JobComponentSystem
 {
     private StepPhysicsWorld stepPhysicsWorld;
     private BuildPhysicsWorld buildPhysicsWorld;
@@ -21,29 +21,29 @@ public class BombAsteroidCollisionSystem : JobComponentSystem
 
     public struct BombAsteroidCollisionSystemJob : ITriggerEventsJob
     {
-        [ReadOnly] public ComponentDataFromEntity<BombTag> allBombs;
-        [ReadOnly] public ComponentDataFromEntity<AsteroidData> allAsteroids;
+        [ReadOnly] public ComponentDataFromEntity<PlayerTag> allPlayers;
+        [ReadOnly] public ComponentDataFromEntity<EnemyTag> allEnemies;
 
         public void Execute(TriggerEvent triggerEvent) {
             Entity entityA = triggerEvent.EntityA;
             Entity entityB = triggerEvent.EntityB;
 
-            if (allAsteroids.HasComponent(entityA) && allBombs.HasComponent(entityB)) {
+            if (allPlayers.HasComponent(entityA) && allEnemies.HasComponent(entityB)) {
                 OnCollision(entityA, entityB);
-            } else if (allBombs.HasComponent(entityA) && allAsteroids.HasComponent(entityB)) {
+            } else if (allEnemies.HasComponent(entityA) && allPlayers.HasComponent(entityB)) {
                 OnCollision(entityB, entityA);
             }
         }
 
-        void OnCollision(Entity asteroid, Entity bomb) {
-            Game.instance.collisionManager.OnBombCollidedWithAsteroid(bomb, asteroid);
+        void OnCollision(Entity player, Entity enemy) {
+            Game.instance.collisionManager.OnPlayerCollidedWithEnemy(player, enemy);
         }
     }
 
     protected override JobHandle OnUpdate(JobHandle inputDeps) {
         var job = new BombAsteroidCollisionSystemJob();
-        job.allBombs = GetComponentDataFromEntity<BombTag>(true);
-        job.allAsteroids = GetComponentDataFromEntity<AsteroidData>(true);
+        job.allPlayers = GetComponentDataFromEntity<PlayerTag>(true);
+        job.allEnemies = GetComponentDataFromEntity<EnemyTag>(true);
 
         JobHandle jobHandle = job.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, inputDeps);
         jobHandle.Complete();
