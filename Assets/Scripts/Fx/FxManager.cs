@@ -13,6 +13,8 @@ public class FxManager : MonoBehaviour
     public ParticleSystem ufoExplosionBig;
     public ParticleSystem ufoExplosionSmall;
     public PowerUpTextFx powerUpTextPrefab;
+    public ParticleSystem enemyApproachingPrefab;
+    public ParticleSystem ufoAppears;
 
     public void PlayHyperspace(Vector3 fromPos, Vector3 toPos) {
         hyperspace.transform.position = fromPos;
@@ -59,5 +61,16 @@ public class FxManager : MonoBehaviour
     public void PlayUFOExplosionSmall(Vector3 pos) {
         ufoExplosionSmall.transform.position = pos;
         ufoExplosionSmall.Play();
+    }
+
+    public void SpawnEnemyApproaching(Vector3 pos, float killTime) {
+        var enemyApproaching = Instantiate(enemyApproachingPrefab);
+        enemyApproaching.transform.position = pos;
+        Destroy(enemyApproaching.gameObject, killTime);
+    }
+
+    public void PlayUFOAppears(Vector3 pos) {
+        ufoAppears.transform.position = pos;
+        ufoAppears.Play();
     }
 }

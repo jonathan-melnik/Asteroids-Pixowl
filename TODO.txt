@@ -1,13 +1,11 @@
-homing missile pueden perseguir ufos
-thrusters para el ufo
-	
-hacer que la bomba colisione con el ufo
-
 Pantalla victoria
 Sonidos
 Diferente velocidad para cada asteroide(chequear el gdd)
 Schedulear los enemigos y powerups
 
+LISTO thrusters para el ufo
+LISTO homing missile pueden perseguir ufos
+LISTO hacer que la bomba colisione con el ufo
 LISTO colision spaceship-ufo
 LISTO Comenzar invencible
 LISTO Fx Hyperspace

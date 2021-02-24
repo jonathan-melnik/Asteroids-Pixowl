@@ -14,8 +14,8 @@ public class SpaceshipThrusters : MonoBehaviour
     }
 
     public void OnSpaceshipEntityMoved(float3 pos, quaternion rot) {
-        thrusters.transform.position = pos;
-        thrusters.transform.rotation = rot;
+        transform.position = pos;
+        transform.rotation = rot;
     }
 
     public void OnSpaceshipEntityIsThrusting(bool isThrusting) {

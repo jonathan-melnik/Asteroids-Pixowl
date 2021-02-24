@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Unity.Entities;
@@ -14,8 +15,12 @@ public class UFOManager : MonoBehaviour
     Entity _smallUFOEntityPrefab;
     BlobAssetStore _blobAssetStore;
     List<Entity> _ufos = new List<Entity>();
+    public SpaceshipThrusters bigUFOThrustersPrefab;
+    public SpaceshipThrusters smallUFOThrustersPrefab;
+    Dictionary<Entity, SpaceshipThrusters> _thrustersByUFO = new Dictionary<Entity, SpaceshipThrusters>();
 
-    const float UFO_BIG_SPEED = 10;
+    const float UFO_BIG_SPEED = 10f;
+    const float SPAWN_DELAY = 2.5f;
 
     private void Awake() {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -31,7 +36,13 @@ public class UFOManager : MonoBehaviour
     }
 
     public void SpawnUFOAtRandomPos(int size = 1) {
-        SpawnUFO(GetRandomScreenPosition(), size);
+        StartCoroutine(ScheduleSpawnUFO(GetRandomScreenPosition(), size));
+    }
+
+    System.Collections.IEnumerator ScheduleSpawnUFO(Vector3 pos, int size) {
+        Game.instance.fxManager.SpawnEnemyApproaching(pos, SPAWN_DELAY);
+        yield return new WaitForSeconds(SPAWN_DELAY);
+        SpawnUFO(pos, size);
     }
 
     void SpawnUFO(Vector3 pos, int size) {
@@ -61,6 +72,12 @@ public class UFOManager : MonoBehaviour
         _entityManager.AddComponentData(ufo, ufoData);
 
         _ufos.Add(ufo);
+
+        var thrusters = Instantiate(GetThrustersPrefabWithSize(size));
+        _thrustersByUFO.Add(ufo, thrusters);
+        thrusters.transform.parent = transform;
+
+        Game.instance.fxManager.PlayUFOAppears(pos);
     }
 
     Vector3 GetRandomScreenPosition() {
@@ -78,6 +95,9 @@ public class UFOManager : MonoBehaviour
 
     public void OnUFODestroyed(Entity ufo) {
         _ufos.Remove(ufo);
+
+        Destroy(_thrustersByUFO[ufo].gameObject);
+        _thrustersByUFO.Remove(ufo);
     }
 
     public Entity GetRandomUFOEntity() {
@@ -85,6 +105,19 @@ public class UFOManager : MonoBehaviour
             return Entity.Null;
         }
         return _ufos[UnityEngine.Random.Range(0, _ufos.Count)];
+    }
+
+    public void UpdateThrusters(Entity ufo, float3 pos, quaternion rot, bool isThrusting) {
+        var thrusters = _thrustersByUFO[ufo];
+        thrusters.OnSpaceshipEntityIsThrusting(isThrusting);
+        thrusters.OnSpaceshipEntityMoved(pos, rot);
+    }
+
+    SpaceshipThrusters GetThrustersPrefabWithSize(int size) {
+        if (size == 1) {
+            return smallUFOThrustersPrefab;
+        }
+        return bigUFOThrustersPrefab;
     }
 }
 

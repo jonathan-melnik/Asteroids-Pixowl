@@ -5548,6 +5548,10 @@ MonoBehaviour:
     type: 3}
   smallUFOPrefab: {fileID: 2987107814075378172, guid: 01dd1ce066a622b4dbaccbd4f84145fc,
     type: 3}
+  bigUFOThrustersPrefab: {fileID: 2545996909980815754, guid: 56ef7f70cd157174fab081e71e0693d7,
+    type: 3}
+  smallUFOThrustersPrefab: {fileID: 2545996909980815754, guid: 8949dce12aad2da499ca350a3ae5d0e8,
+    type: 3}
 --- !u!198 &1927280626 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 19849376, guid: d16221e794fe16e4e8994a7f8c770561,
@@ -5741,6 +5745,8 @@ MonoBehaviour:
   ufoExplosionBig: {fileID: 652506846}
   ufoExplosionSmall: {fileID: 1927280626}
   powerUpTextPrefab: {fileID: 1702175653094537491, guid: 9144a37aa454a374ebf14de46aa51899,
+    type: 3}
+  enemyApproachingPrefab: {fileID: 2188714931114698445, guid: 25b59bd6c6b8eed41ae69c5c8cefe4c9,
     type: 3}
 --- !u!4 &2059142584
 Transform:
