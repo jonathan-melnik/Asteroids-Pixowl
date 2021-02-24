@@ -382,4 +382,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 35
   type: 0
-  isFromEnemy: 0

@@ -245,9 +245,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63ba4ae026410224887164f966114742, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0
+  offset: 2
   shotType: 0
-  isEnemyFire: 1
 --- !u!114 &3802065081689808661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,6 +341,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 2
+  minShootTime: 0.5
+  maxShootTime: 2
+  shootTimer: 0
 --- !u!1 &2987107816035489165
 GameObject:
   m_ObjectHideFlags: 0

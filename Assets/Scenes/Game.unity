@@ -788,6 +788,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 989308293}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &652506846 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 19849376, guid: d16221e794fe16e4e8994a7f8c770561,
+    type: 3}
+  m_PrefabInstance: {fileID: 1283375686}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &689541643
 GameObject:
   m_ObjectHideFlags: 0
@@ -5542,6 +5548,12 @@ MonoBehaviour:
     type: 3}
   smallUFOPrefab: {fileID: 2987107814075378172, guid: 01dd1ce066a622b4dbaccbd4f84145fc,
     type: 3}
+--- !u!198 &1927280626 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 19849376, guid: d16221e794fe16e4e8994a7f8c770561,
+    type: 3}
+  m_PrefabInstance: {fileID: 1219568443}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1951963050
 GameObject:
   m_ObjectHideFlags: 0
@@ -5675,6 +5687,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 4290706097447520925, guid: 6bf9d7b20bb252c4982ff2b290f8b0e6,
     type: 3}
+  ufoShotPrefab: {fileID: 4290706097447520925, guid: 3f1ecd53f13714e4ebacfafb345ab8e8,
+    type: 3}
 --- !u!4 &2043722152
 Transform:
   m_ObjectHideFlags: 0
@@ -5724,8 +5738,8 @@ MonoBehaviour:
   shotHitAsteroid: {fileID: 335543382}
   homingMissileHitAsteroid: {fileID: 1117463020}
   homingMissileSelfDestroyed: {fileID: 1768924215}
-  ufoExplosionBig: {fileID: 0}
-  ufoExplosionSmall: {fileID: 0}
+  ufoExplosionBig: {fileID: 652506846}
+  ufoExplosionSmall: {fileID: 1927280626}
   powerUpTextPrefab: {fileID: 1702175653094537491, guid: 9144a37aa454a374ebf14de46aa51899,
     type: 3}
 --- !u!4 &2059142584

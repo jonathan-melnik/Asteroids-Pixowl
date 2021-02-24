@@ -1,17 +1,18 @@
-colision spaceship-ufo
-hacer que el ufo dispare
-colision spaceship-shot ufo
 homing missile pueden perseguir ufos
-
+thrusters para el ufo
+	
 Pantalla victoria
-UFO
 Sonidos
 Diferente velocidad para cada asteroide(chequear el gdd)
 Schedulear los enemigos y powerups
 
+LISTO colision spaceship-ufo
 LISTO Comenzar invencible
 LISTO Fx Hyperspace
 LISTO Warp-cambio de escena
 LISTO Pantalla gameover
 LISTO Vidas
 LISTO Power Ups(falta bomba y misil dirigido)
+LISTO hacer que el ufo dispare
+LISTO colision spaceship-shot ufo
+LISTO colision ufo - shot spaceship

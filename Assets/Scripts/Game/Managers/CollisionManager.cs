@@ -9,6 +9,8 @@ public class CollisionManager : MonoBehaviour
 {
     Queue<Tuple<Entity, Entity>> _spaceshipAsteroidCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
     Queue<Tuple<Entity, Entity>> _shotAsteroidCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
+    Queue<Tuple<Entity, Entity>> _shotSpaceshipCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
+    Queue<Tuple<Entity, Entity>> _shotUFOCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
     Queue<Tuple<Entity, Entity>> _spaceshipPowerUpCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
     Queue<Tuple<Entity, Entity>> _bombAsteroidCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
     Queue<Tuple<Entity, Entity>> _homingMissileAsteroidCollisionsQueue = new Queue<Tuple<Entity, Entity>>();
@@ -38,6 +40,16 @@ public class CollisionManager : MonoBehaviour
         while (_shotAsteroidCollisionsQueue.Count > 0) {
             var pair = _shotAsteroidCollisionsQueue.Dequeue();
             ResolveShotAsteroidCollision(pair.Item1, pair.Item2);
+        }
+
+        while (_shotSpaceshipCollisionsQueue.Count > 0) {
+            var pair = _shotSpaceshipCollisionsQueue.Dequeue();
+            ResolveShotSpaceshipCollision(pair.Item1, pair.Item2);
+        }
+
+        while (_shotUFOCollisionsQueue.Count > 0) {
+            var pair = _shotUFOCollisionsQueue.Dequeue();
+            ResolveShotUFOCollision(pair.Item1, pair.Item2);
         }
 
         while (_spaceshipPowerUpCollisionsQueue.Count > 0) {
@@ -96,6 +108,33 @@ public class CollisionManager : MonoBehaviour
         _asteroidManager.OnAsteroidDestroyed(asteroid);
     }
 
+    void ResolveShotSpaceshipCollision(Entity shot, Entity spaceship) {
+        var spaceshipPos = _entityManager.GetComponentData<Translation>(spaceship).Value;
+
+        _fxManager.PlaySpaceshipExplosion(spaceshipPos);
+
+        _entityManager.DestroyEntity(shot);
+        _entityManager.DestroyEntity(spaceship);
+
+        _spaceshipManager.OnSpaceshipDestroyed(spaceshipPos);
+    }
+
+    void ResolveShotUFOCollision(Entity shot, Entity ufo) {
+        var ufoPos = _entityManager.GetComponentData<Translation>(ufo).Value;
+        var ufoSize = _entityManager.GetComponentData<UFOData>(ufo).size;
+
+        if (ufoSize == 1) {
+            _fxManager.PlayUFOExplosionSmall(ufoPos);
+        } else {
+            _fxManager.PlayUFOExplosionBig(ufoPos);
+        }
+
+        _entityManager.DestroyEntity(shot);
+        _entityManager.DestroyEntity(ufo);
+
+        _ufoManager.OnUFODestroyed(ufo);
+    }
+
     void ResolveSpaceshipPowerUpCollision(Entity spaceship, Entity powerUp) {
         var powerUpType = _entityManager.GetComponentData<PowerUpData>(powerUp).type;
         var powerUpPos = _entityManager.GetComponentData<Translation>(powerUp).Value;
@@ -152,6 +191,14 @@ public class CollisionManager : MonoBehaviour
 
     public void OnShotCollidedWithAsteroid(Entity shot, Entity asteroid) {
         _shotAsteroidCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(shot, asteroid));
+    }
+
+    public void OnShotCollidedWithSpaceship(Entity shot, Entity spaceship) {
+        _shotSpaceshipCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(shot, spaceship));
+    }
+
+    public void OnShotCollidedWithUFO(Entity shot, Entity ufo) {
+        _shotUFOCollisionsQueue.Enqueue(new Tuple<Entity, Entity>(shot, ufo));
     }
 
     public void OnSpaceshipCollidedWithPowerUp(Entity spaceship, Entity powerUp) {

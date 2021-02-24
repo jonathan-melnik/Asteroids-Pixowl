@@ -56,6 +56,10 @@ public class UFOManager : MonoBehaviour
         control.turningTimer = 0;
         _entityManager.AddComponentData(ufo, control);
 
+        var ufoData = _entityManager.GetComponentData<UFOData>(ufo);
+        ufoData.shootTimer = UnityEngine.Random.Range(ufoData.minShootTime, ufoData.maxShootTime);
+        _entityManager.AddComponentData(ufo, ufoData);
+
         _ufos.Add(ufo);
     }
 

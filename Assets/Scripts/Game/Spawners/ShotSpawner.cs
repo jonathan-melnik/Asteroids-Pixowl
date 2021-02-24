@@ -8,8 +8,10 @@ using UnityEngine;
 public class ShotSpawner : MonoBehaviour
 {
     public GameObject shotPrefab;
+    public GameObject ufoShotPrefab;
     EntityManager _entityManager;
     Entity _shotEntityPrefab;
+    Entity _ufoShotEntityPrefab;
     BlobAssetStore _blobAssetStore;
     float _angleOffset = math.radians(90);
 
@@ -19,6 +21,7 @@ public class ShotSpawner : MonoBehaviour
         _blobAssetStore = new BlobAssetStore();
         var settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, _blobAssetStore);
         _shotEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(shotPrefab, settings);
+        _ufoShotEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(ufoShotPrefab, settings);
     }
 
     private void OnDestroy() {
@@ -26,7 +29,7 @@ public class ShotSpawner : MonoBehaviour
     }
 
     public void Spawn(Vector3 pos, float angle, bool isFromEnemy) {
-        Entity shot = _entityManager.Instantiate(_shotEntityPrefab);
+        Entity shot = _entityManager.Instantiate(isFromEnemy ? _ufoShotEntityPrefab : _shotEntityPrefab);
         _entityManager.SetName(shot, "Shot");
 
         var shotData = _entityManager.GetComponentData<ShotData>(shot);

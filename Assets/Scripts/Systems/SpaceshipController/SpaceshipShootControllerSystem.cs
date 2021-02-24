@@ -27,7 +27,7 @@ public class SpaceshipShootControllerSystem : JobComponentSystem
                     float3 dir = new float3(math.cos(angle), math.sin(angle), 0);
                     float3 pos = tr.Value + dir * shoot.offset;
 
-                    Game.instance.shootManager.ScheduleShoot(pos, angle, shotType, shoot.isEnemyFire);
+                    Game.instance.shootManager.ScheduleShoot(pos, angle, shotType, false);
                 }
             }).Run();
 

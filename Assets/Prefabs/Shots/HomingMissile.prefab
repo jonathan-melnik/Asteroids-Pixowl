@@ -369,7 +369,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 28
   type: 1
-  isFromEnemy: 0
 --- !u!1001 &5672197777934173842
 PrefabInstance:
   m_ObjectHideFlags: 0
