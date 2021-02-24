@@ -1,11 +1,12 @@
 Pantalla victoria
-Power Ups(falta bomba y misil dirigido)
 UFO
 Sonidos
 Diferente velocidad para cada asteroide(chequear el gdd)
+Schedulear los enemigos y powerups
 
 LISTO Comenzar invencible
 LISTO Fx Hyperspace
 LISTO Warp-cambio de escena
 LISTO Pantalla gameover
 LISTO Vidas
+LISTO Power Ups(falta bomba y misil dirigido)

@@ -6,14 +6,14 @@ using UnityEngine.SceneManagement;
 public class Game : MonoBehaviour
 {
     public AsteroidManager asteroidManager;
-    public ShotSpawner shotSpawner;
     public SpaceshipManager spaceshipManager;
     public BombSpawner bombSpawner;
     public UIManager uiManager;
     public CameraScreenFade cameraScreenFade;
     public CollisionManager collisionManager;
-    public HomingMissileManager homingMissileManager;
     public FxManager fxManager;
+    public ShootManager shootManager;
+    public UFOManager ufoManager;
     [SerializeField] int lives = 1;
     bool _checkRespawnOrGameOver = false;
     bool _isRestarting = false;
@@ -31,6 +31,7 @@ public class Game : MonoBehaviour
     void Start() {
         spaceshipManager.SpawnSpaceship();
         asteroidManager.SpawnInitialAsteroids();
+        ufoManager.SpawnUFOAtRandomPos();
         uiManager.lives.SetCount(lives);
     }
 

@@ -11,19 +11,23 @@ public class SpaceshipShootControllerSystem : JobComponentSystem
         Entities
             .WithAll<SpaceshipTag>()
             .WithoutBurst()
-            .WithStructuralChanges()
-            .ForEach((in Translation tr, in MovementData movement, in ShotData shot) =>
+            .ForEach((in Translation tr, in MovementData movement, in ShootData shoot) =>
             {
+                bool isShooting = false;
+                ShotType shotType = shoot.shotType;
                 if (Input.GetKeyDown(KeyCode.X)) {
+                    isShooting = true;
+                } else if (Input.GetKeyDown(KeyCode.H)) { // cheat
+                    isShooting = true;
+                    shotType = ShotType.HomingMissile;
+                }
+
+                if (isShooting) {
                     float angle = -movement.angle + math.radians(movement.angleOffset);
                     float3 dir = new float3(math.cos(angle), math.sin(angle), 0);
-                    float3 pos = tr.Value + dir * shot.offset;
+                    float3 pos = tr.Value + dir * shoot.offset;
 
-                    if (shot.type == ShotType.Normal) {
-                        Game.instance.shotSpawner.Spawn(pos, angle, shot.speed);
-                    } else if (shot.type == ShotType.HomingMissile) {
-                        Game.instance.homingMissileManager.Spawn(pos, angle, shot.speed);
-                    }
+                    Game.instance.shootManager.ScheduleShoot(pos, angle, shotType, shoot.isEnemyFire);
                 }
             }).Run();
 

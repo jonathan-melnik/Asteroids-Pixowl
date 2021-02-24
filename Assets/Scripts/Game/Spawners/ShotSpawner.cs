@@ -25,9 +25,11 @@ public class ShotSpawner : MonoBehaviour
         _blobAssetStore.Dispose();
     }
 
-    public void Spawn(Vector3 pos, float angle, float speed) {
+    public void Spawn(Vector3 pos, float angle, bool isFromEnemy) {
         Entity shot = _entityManager.Instantiate(_shotEntityPrefab);
         _entityManager.SetName(shot, "Shot");
+
+        var shotData = _entityManager.GetComponentData<ShotData>(shot);
 
         var translation = new Translation() {
             Value = pos
@@ -40,7 +42,7 @@ public class ShotSpawner : MonoBehaviour
         _entityManager.AddComponentData(shot, rotation);
 
         var movement = new ConstantMovementData() {
-            velocity = new float3(math.cos(angle), math.sin(angle), 0) * speed
+            velocity = new float3(math.cos(angle), math.sin(angle), 0) * shotData.speed
         };
         _entityManager.AddComponentData(shot, movement);
     }

@@ -68,7 +68,7 @@ public class SpaceshipManager : MonoBehaviour
         } else if (powerUpType == PowerUpType.Bomb) {
             Game.instance.bombSpawner.Spawn(GetSpaceshipPos());
         } else if (powerUpType == PowerUpType.HomingMissile) {
-            Game.instance.homingMissileManager.OnPickedUpAmmo();
+            Game.instance.shootManager.OnPickedUpHomingMissileAmmo();
         }
     }
 
@@ -77,8 +77,8 @@ public class SpaceshipManager : MonoBehaviour
     }
 
     public void SetShotType(ShotType shotType) {
-        var shotData = _entityManager.GetComponentData<ShotData>(_spaceship);
-        shotData.type = shotType;
-        _entityManager.SetComponentData<ShotData>(_spaceship, shotData);
+        var shootData = _entityManager.GetComponentData<ShootData>(_spaceship);
+        shootData.shotType = shotType;
+        _entityManager.SetComponentData<ShootData>(_spaceship, shootData);
     }
 }

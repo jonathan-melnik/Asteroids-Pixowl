@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 2205998536935695617}
   - component: {fileID: -7936083363289632983}
   - component: {fileID: 6545256907504818788}
+  - component: {fileID: 7104685809623215848}
   m_Layer: 0
   m_Name: HomingMissile
   m_TagString: Untagged
@@ -354,6 +355,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed2864bc321b9b84687b623e78e1fb6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7104685809623215848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2205998536935695619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f29558a49fc3b844c9a24c6420d12f17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 28
+  type: 1
+  isFromEnemy: 0
 --- !u!1001 &5672197777934173842
 PrefabInstance:
   m_ObjectHideFlags: 0

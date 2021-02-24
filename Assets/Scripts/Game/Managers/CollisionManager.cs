@@ -15,14 +15,14 @@ public class CollisionManager : MonoBehaviour
     EntityManager _entityManager;
     AsteroidManager _asteroidManager;
     SpaceshipManager _spaceshipManager;
-    HomingMissileManager _homingMissileManager;
+    ShootManager _shootManager;
     FxManager _fxManager;
 
     private void Start() {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         _asteroidManager = Game.instance.asteroidManager;
         _spaceshipManager = Game.instance.spaceshipManager;
-        _homingMissileManager = Game.instance.homingMissileManager;
+        _shootManager = Game.instance.shootManager;
         _fxManager = Game.instance.fxManager;
     }
 
@@ -118,7 +118,7 @@ public class CollisionManager : MonoBehaviour
         _entityManager.DestroyEntity(missile);
 
         _asteroidManager.OnAsteroidDestroyed(asteroid);
-        _homingMissileManager.OnMissileDestroyed(missile);
+        _shootManager.OnHomingMissileDestroyed(missile);
     }
 
     public void OnSpaceshipCollidedWithAsteroid(Entity spaceship, Entity asteroid) {

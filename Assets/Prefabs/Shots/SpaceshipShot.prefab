@@ -97,8 +97,9 @@ GameObject:
   - component: {fileID: 5794844995343398617}
   - component: {fileID: 8316130555631273296}
   - component: {fileID: 8699383818953306212}
+  - component: {fileID: 6333164147265127612}
   m_Layer: 0
-  m_Name: Shot
+  m_Name: SpaceshipShot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -367,3 +368,18 @@ MonoBehaviour:
     Tag05: 0
     Tag06: 0
     Tag07: 0
+--- !u!114 &6333164147265127612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4290706097447520925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f29558a49fc3b844c9a24c6420d12f17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 35
+  type: 0
+  isFromEnemy: 0

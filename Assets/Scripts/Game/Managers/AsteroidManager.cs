@@ -59,7 +59,7 @@ public class AsteroidManager : MonoBehaviour
         };
         _entityManager.AddComponentData(asteroid, translation);
 
-        float angle = UnityEngine.Random.Range(0, 360f);
+        float angle = math.radians(UnityEngine.Random.Range(0, 360f));
         float3 direction = new float3(math.cos(angle), math.sin(angle), 0);
         var movement = new ConstantMovementData() {
             velocity = direction * ASTEROID_BIG_SPEED,

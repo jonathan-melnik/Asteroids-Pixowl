@@ -70,9 +70,11 @@ public class HomingMissileManager : MonoBehaviour
         }
     }
 
-    public void Spawn(Vector3 pos, float angle, float speed) {
+    public void Spawn(Vector3 pos, float angle) {
         var missile = _entityManager.Instantiate(_missileEntityPrefab);
         _entityManager.SetName(missile, "Homing Missile");
+
+        var shotData = _entityManager.GetComponentData<ShotData>(missile);
 
         var translation = new Translation() {
             Value = pos
@@ -85,7 +87,7 @@ public class HomingMissileManager : MonoBehaviour
         _entityManager.AddComponentData(missile, rotation);
 
         var movement = new ConstantMovementData() {
-            velocity = new float3(math.cos(angle), math.sin(angle), 0) * speed
+            velocity = new float3(math.cos(angle), math.sin(angle), 0) * shotData.speed
         };
         _entityManager.AddComponentData(missile, movement);
 
