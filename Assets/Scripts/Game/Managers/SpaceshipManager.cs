@@ -1,3 +1,5 @@
+using EazyTools.SoundManager;
+using JonMelnik.Game;
 using System.Collections.Generic;
 using Unity.Entities;
 using Unity.Transforms;
@@ -52,6 +54,8 @@ public class SpaceshipManager : MonoBehaviour
         Game.instance.fxManager.PlaySpaceshipExplosion(spaceshipPos);
         _spaceship = Entity.Null;
         thrusters.Deactivate();
+
+        SoundManager.PlaySound(SFX.game.spaceship.explode);
     }
 
     public void ScheduleRespawn() {

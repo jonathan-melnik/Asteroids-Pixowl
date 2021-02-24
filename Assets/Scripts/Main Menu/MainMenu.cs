@@ -8,8 +8,17 @@ public class MainMenu : MonoBehaviour
     public GameObject canvas;
     public WarpDriveFx warpDriveFx;
     public CameraScreenFade cameraScreenFade;
+    bool _isTransitioning = false;
+
+    private void Start() {
+        cameraScreenFade.FadeIn(CameraScreenFade.FADE_IN_TIME);
+    }
 
     void Update() {
+        if (_isTransitioning) {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.X)) {
             TransitionToGame();
         }
@@ -20,6 +29,7 @@ public class MainMenu : MonoBehaviour
     }
 
     void TransitionToGame() {
+        _isTransitioning = true;
         iTween.ValueTo(gameObject, iTween.Hash("from", 1, "to", 0, "time", 0.5f, "OnUpdate", "OnCanvasAlphaTweenUpdate"));
         warpDriveFx.SpeedUpAndFade();
         StartCoroutine(FadeOutWithDelay(0.7f));

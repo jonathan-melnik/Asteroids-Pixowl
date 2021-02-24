@@ -1,3 +1,5 @@
+using EazyTools.SoundManager;
+using JonMelnik.Game;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -20,7 +22,16 @@ public class UFOManager : MonoBehaviour
     Dictionary<Entity, SpaceshipThrusters> _thrustersByUFO = new Dictionary<Entity, SpaceshipThrusters>();
     public float minSpeed;
     public float maxSpeed;
-    const float SPAWN_DELAY = 2.5f;
+    public int spawningCount = 0;
+    bool _canScheduleSpawn = true;
+
+    delegate void Eventhandler(object sender, EventArgs args);
+    public event EventHandler ufoDestroyed;
+
+    const float SPAWN_MIN_DELAY = 10f;
+    const float SPAWN_MAX_DELAY = 20f;
+    const float INVOKE_TIME = 2.5f;
+    const float SMALL_SIZE_CHANCE = 0.6f;
 
     private void Awake() {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -29,20 +40,39 @@ public class UFOManager : MonoBehaviour
         var settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, _blobAssetStore);
         _bigUFOEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(bigUFOPrefab, settings);
         _smallUFOEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(smallUFOPrefab, settings);
+
+        StartCoroutine(ScheduleSpawning());
     }
 
     private void OnDestroy() {
         _blobAssetStore.Dispose();
     }
 
-    public void SpawnUFOAtRandomPos(int size = 1) {
-        StartCoroutine(ScheduleSpawnUFO(GetRandomScreenPosition(), size));
+    System.Collections.IEnumerator ScheduleSpawning() {
+        while (_canScheduleSpawn) {
+            float delay = UnityEngine.Random.Range(SPAWN_MIN_DELAY, SPAWN_MAX_DELAY);
+            yield return new WaitForSeconds(delay);
+            if (!_canScheduleSpawn) {
+                break;
+            }
+            int size = UnityEngine.Random.value < SMALL_SIZE_CHANCE ? 1 : 2;
+            SpawnUFOAtRandomPos(size);
+        }
     }
 
-    System.Collections.IEnumerator ScheduleSpawnUFO(Vector3 pos, int size) {
-        Game.instance.fxManager.SpawnEnemyApproaching(pos, SPAWN_DELAY);
-        yield return new WaitForSeconds(SPAWN_DELAY);
+    public void SpawnUFOAtRandomPos(int size = 1) {
+        if (!_canScheduleSpawn) {
+            return;
+        }
+        StartCoroutine(InvokeSpawnUFO(GetRandomScreenPosition(), size));
+    }
+
+    System.Collections.IEnumerator InvokeSpawnUFO(Vector3 pos, int size) {
+        spawningCount++;
+        Game.instance.fxManager.SpawnEnemyApproaching(pos, INVOKE_TIME);
+        yield return new WaitForSeconds(INVOKE_TIME);
         SpawnUFO(pos, size);
+        spawningCount--;
     }
 
     void SpawnUFO(Vector3 pos, int size) {
@@ -99,6 +129,10 @@ public class UFOManager : MonoBehaviour
 
         Destroy(_thrustersByUFO[ufo].gameObject);
         _thrustersByUFO.Remove(ufo);
+
+        ufoDestroyed?.Invoke(this, EventArgs.Empty);
+
+        SoundManager.PlaySound(SFX.game.ufo.explode);
     }
 
     public Entity GetRandomUFOEntity() {
@@ -119,6 +153,22 @@ public class UFOManager : MonoBehaviour
             return smallUFOThrustersPrefab;
         }
         return bigUFOThrustersPrefab;
+    }
+
+    public int ufosRemaining {
+        get {
+            return _ufos.Count;
+        }
+    }
+
+    public bool isUFOBeingSpawned {
+        get {
+            return spawningCount > 0;
+        }
+    }
+
+    public void StopSpawning() {
+        _canScheduleSpawn = false;
     }
 }
 

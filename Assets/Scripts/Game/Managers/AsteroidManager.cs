@@ -1,3 +1,6 @@
+using EazyTools.SoundManager;
+using JonMelnik.Game;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Unity.Entities;
@@ -19,6 +22,9 @@ public class AsteroidManager : MonoBehaviour
     public float minSpeed;
     public float maxSpeed;
 
+    delegate void Eventhandler(object sender, EventArgs args);
+    public event EventHandler asteroidDestroyed;
+
     private void Awake() {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
@@ -35,7 +41,7 @@ public class AsteroidManager : MonoBehaviour
 
     public void SpawnInitialAsteroids() {
         SpawnAsteroidAtRandomPos();
-        //SpawnAsteroidAtRandomPos();
+        SpawnAsteroidAtRandomPos();
         //SpawnAsteroidAtRandomPos();
     }
 
@@ -92,6 +98,9 @@ public class AsteroidManager : MonoBehaviour
 
     public void OnAsteroidDestroyed(Entity asteroid) {
         _asteroids.Remove(asteroid);
+        asteroidDestroyed?.Invoke(this, EventArgs.Empty);
+
+        SoundManager.PlaySound(SFX.game.asteroid.explode);
     }
 
     public Entity GetRandomAsteroidEntity() {
@@ -99,6 +108,12 @@ public class AsteroidManager : MonoBehaviour
             return Entity.Null;
         }
         return _asteroids[UnityEngine.Random.Range(0, _asteroids.Count)];
+    }
+
+    public int asteroidsRemaining {
+        get {
+            return _asteroids.Count;
+        }
     }
 }
 

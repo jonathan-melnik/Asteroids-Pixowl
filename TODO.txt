@@ -1,4 +1,3 @@
-Pantalla victoria
 Sonidos
 Schedulear los enemigos y powerups
 
@@ -15,3 +14,5 @@ LISTO Power Ups(falta bomba y misil dirigido)
 LISTO hacer que el ufo dispare
 LISTO colision spaceship-shot ufo
 LISTO colision ufo - shot spaceship
+LISTO Condicion de victoria
+LISTO Pantalla victoria

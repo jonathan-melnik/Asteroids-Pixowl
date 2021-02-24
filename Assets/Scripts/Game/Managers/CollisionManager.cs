@@ -121,6 +121,8 @@ public class CollisionManager : MonoBehaviour
         _entityManager.DestroyEntity(spaceship);
 
         _spaceshipManager.OnSpaceshipDestroyed(spaceshipPos);
+
+        Game.instance.DecreaseLives();
     }
 
     void ResolveShotUFOCollision(Entity shot, Entity ufo) {
@@ -221,6 +223,8 @@ public class CollisionManager : MonoBehaviour
         }
         _spaceshipManager.OnSpaceshipDestroyed(spaceshipPos);
         _ufoManager.OnUFODestroyed(ufo);
+
+        Game.instance.DecreaseLives();
     }
 
     public void OnPlayerCollidedWithEnemy(Entity player, Entity enemy) {
