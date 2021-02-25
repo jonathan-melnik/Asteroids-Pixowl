@@ -1,3 +1,5 @@
+using EazyTools.SoundManager;
+using JonMelnik.Game;
 using System;
 using System.Collections;
 using Unity.Entities;
@@ -15,9 +17,12 @@ public class Game : MonoBehaviour
     public FxManager fxManager;
     public ShootManager shootManager;
     public UFOManager ufoManager;
-    [SerializeField] int lives = 1;
+    public PowerUpSpawner powerUpSpawner;
+    [SerializeField] int lives = 3;
     bool _checkRespawnOrGameOver = false;
     bool _isRestarting = false;
+    bool _isGameOver = false;
+    int _musicSndId;
     public bool isInputEnabled { get; private set; } = true;
     public static Game instance;
 
@@ -38,8 +43,10 @@ public class Game : MonoBehaviour
     void Start() {
         spaceshipManager.SpawnSpaceship();
         asteroidManager.SpawnInitialAsteroids();
-        ufoManager.SpawnUFOAtRandomPos();
         uiManager.lives.SetCount(lives);
+
+        _musicSndId = SoundManager.PlayMusic(SFX.music.theme, 0.5f, true, false);
+        SoundManager.GetAudio(_musicSndId).fadeInSeconds = 2;
     }
 
     private void Update() {
@@ -85,6 +92,8 @@ public class Game : MonoBehaviour
             spaceshipManager.ScheduleRespawn();
         } else {
             uiManager.ShowGameOver();
+            _isGameOver = true;
+            isInputEnabled = false;
         }
     }
 
@@ -97,16 +106,21 @@ public class Game : MonoBehaviour
     }
 
     void CheckEndGame() {
+        if (_isGameOver) {
+            return;
+        }
         if (asteroidManager.asteroidsRemaining == 0 && ufoManager.ufosRemaining == 0 && !ufoManager.isUFOBeingSpawned && lives > 0) {
             ufoManager.StopSpawning();
+            powerUpSpawner.StopSpawning();
             isInputEnabled = false;
-            StartCoroutine(ScheduleFadeOut(FADE_OUT_TO_WIN_DELAY));
+            StartCoroutine(ScheduleFadeOutToGameWin(FADE_OUT_TO_WIN_DELAY));
         }
     }
 
-    IEnumerator ScheduleFadeOut(float delay) {
-        yield return new WaitForSeconds(delay);
+    IEnumerator ScheduleFadeOutToGameWin(float delay) {
         var fadeOutTime = CameraScreenFade.FADE_OUT_TIME;
+        SoundManager.GetAudio(_musicSndId).fadeInSeconds = delay + fadeOutTime;
+        yield return new WaitForSeconds(delay);
         cameraScreenFade.FadeOut(fadeOutTime);
         StartCoroutine(LoadGameWinWithDelay(fadeOutTime));
     }

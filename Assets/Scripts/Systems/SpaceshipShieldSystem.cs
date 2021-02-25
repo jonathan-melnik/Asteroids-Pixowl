@@ -9,8 +9,6 @@ using System.Diagnostics;
 public class SpaceshipShieldSystem : JobComponentSystem
 {
     protected override JobHandle OnUpdate(JobHandle inputDeps) {
-        float dt = Time.DeltaTime;
-
         Entities
             .WithoutBurst()
             .WithAll<SpaceshipTag>()

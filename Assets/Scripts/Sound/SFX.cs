@@ -7,16 +7,19 @@ namespace JonMelnik.Game
         [SerializeField] GameSounds _game;
         [SerializeField] UISounds _ui;
         [SerializeField] FanfareSounds _fanfare;
+        [SerializeField] MusicSounds _music;
 
         // Uso estas variables estaticas para que haya que escribir menos para refenciar a los sonidos desde otras partes del codigo
         public static GameSounds game;
         public static UISounds ui;
         public static FanfareSounds fanfare;
+        public static MusicSounds music;
 
         private void Awake() {
             game = _game;
             ui = _ui;
             fanfare = _fanfare;
+            music = _music;
         }
     }
 
@@ -72,5 +75,12 @@ namespace JonMelnik.Game
     public class FanfareSounds
     {
         public AudioClip gameCompleted;
+        public AudioClip gameOver;
+    }
+
+    [System.Serializable]
+    public class MusicSounds
+    {
+        public AudioClip theme;
     }
 }

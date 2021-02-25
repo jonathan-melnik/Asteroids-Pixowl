@@ -9,8 +9,11 @@ public class PowerUpSpawner : MonoBehaviour
     EntityManager _entityManager;
     Entity _powerUpEntityPrefab;
     BlobAssetStore _blobAssetStore;
+    bool _canSpawn = true;
 
-    const float TIME_TO_CREATE = 4;
+    const float INIT_SPAWN_DELAY = 4;
+    const float SPAWN_MIN_DELAY = 10;
+    const float SPAWN_MAX_DELAY = 15;
 
     private void Awake() {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -23,8 +26,16 @@ public class PowerUpSpawner : MonoBehaviour
     }
 
     IEnumerator SchedulePowerUpCreation() {
-        yield return new WaitForSeconds(TIME_TO_CREATE);
+        yield return new WaitForSeconds(INIT_SPAWN_DELAY);
         SpawnPowerUpAtRandomPos(GetRandomPowerUpType());
+        while (_canSpawn) {
+            float delay = UnityEngine.Random.Range(SPAWN_MIN_DELAY, SPAWN_MAX_DELAY);
+            yield return new WaitForSeconds(delay);
+            if (!_canSpawn) {
+                break;
+            }
+            SpawnPowerUpAtRandomPos(GetRandomPowerUpType());
+        }
     }
 
     PowerUpType[] _powerUpTypes = new PowerUpType[] { PowerUpType.Bomb, PowerUpType.Shield, PowerUpType.HomingMissile };
@@ -42,8 +53,9 @@ public class PowerUpSpawner : MonoBehaviour
 
     void SpawnPowerUp(Vector3 pos, PowerUpType type) {
         Entity powerUp = _entityManager.Instantiate(_powerUpEntityPrefab);
+#if UNITY_EDITOR
         _entityManager.SetName(powerUp, "Power Up");
-
+#endif
         var translation = new Translation() {
             Value = pos
         };
@@ -59,5 +71,9 @@ public class PowerUpSpawner : MonoBehaviour
         float x = UnityEngine.Random.Range(ScreenCorners.LowerLeft.Data.x, ScreenCorners.UpperRight.Data.x);
         float y = UnityEngine.Random.Range(ScreenCorners.LowerLeft.Data.y, ScreenCorners.UpperRight.Data.y);
         return new Vector3(x, y, 0);
+    }
+
+    public void StopSpawning() {
+        _canSpawn = false;
     }
 }

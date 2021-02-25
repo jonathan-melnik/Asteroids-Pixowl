@@ -36,8 +36,9 @@ public class BombSpawner : MonoBehaviour
         var settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, _blobAssetStore);
         _bombEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(bombPrefab, settings);
         Entity bomb = _entityManager.Instantiate(_bombEntityPrefab);
+#if UNITY_EDITOR
         _entityManager.SetName(bomb, "Bomb");
-
+#endif
         var translation = new Translation() {
             Value = pos
         };

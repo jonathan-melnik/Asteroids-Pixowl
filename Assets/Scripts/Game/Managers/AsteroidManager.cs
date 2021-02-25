@@ -22,6 +22,8 @@ public class AsteroidManager : MonoBehaviour
     public float minSpeed;
     public float maxSpeed;
 
+    const int INIT_ASTEROIDS_COUNT = 3;
+
     delegate void Eventhandler(object sender, EventArgs args);
     public event EventHandler asteroidDestroyed;
 
@@ -40,9 +42,9 @@ public class AsteroidManager : MonoBehaviour
     }
 
     public void SpawnInitialAsteroids() {
-        SpawnAsteroidAtRandomPos();
-        SpawnAsteroidAtRandomPos();
-        //SpawnAsteroidAtRandomPos();
+        for (int i = 0; i < INIT_ASTEROIDS_COUNT; i++) {
+            SpawnAsteroidAtRandomPos();
+        }
     }
 
     void SpawnAsteroidAtRandomPos(int size = 3) {
@@ -57,8 +59,9 @@ public class AsteroidManager : MonoBehaviour
     void SpawnAsteroid(Vector3 pos, int size) {
         var prefab = GetEntityPrefabWithSize(size);
         Entity asteroid = _entityManager.Instantiate(prefab);
+#if UNITY_EDITOR
         _entityManager.SetName(asteroid, "Asteroid");
-
+#endif
 
         var translation = new Translation() {
             Value = pos

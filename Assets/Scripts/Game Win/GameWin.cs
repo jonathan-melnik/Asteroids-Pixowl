@@ -1,3 +1,5 @@
+using EazyTools.SoundManager;
+using JonMelnik.Game;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +9,11 @@ public class GameWin : MonoBehaviour
 {
     public CameraScreenFade cameraScreenFade;
     bool _isTransitioning = false;
+
+    void Start() {
+        SoundManager.PlaySound(SFX.fanfare.gameCompleted);
+        cameraScreenFade.FadeIn(CameraScreenFade.FADE_IN_TIME);
+    }
 
     void Update() {
         if (_isTransitioning) {
@@ -23,6 +30,7 @@ public class GameWin : MonoBehaviour
     }
 
     IEnumerator TransitionToMainMenu() {
+        SoundManager.PlaySound(SFX.ui.pressToContinue);
         _isTransitioning = true;
         float fadeOutDelay = CameraScreenFade.FADE_OUT_TIME;
         cameraScreenFade.FadeOut(fadeOutDelay);

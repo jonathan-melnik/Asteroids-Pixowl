@@ -1,3 +1,5 @@
+using EazyTools.SoundManager;
+using JonMelnik.Game;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -148,6 +150,14 @@ public class CollisionManager : MonoBehaviour
         _fxManager.ShowPowerUpText(powerUpPos, powerUpType);
 
         _entityManager.DestroyEntity(powerUp);
+
+        if (powerUpType == PowerUpType.Bomb) {
+            SoundManager.PlaySound(SFX.game.powerUp.bomb);
+        } else if (powerUpType == PowerUpType.HomingMissile) {
+            SoundManager.PlaySound(SFX.game.powerUp.missiles);
+        } else if (powerUpType == PowerUpType.Shield) {
+            SoundManager.PlaySound(SFX.game.powerUp.shield);
+        }
     }
 
     void ResolveBombAsteroidCollision(Entity bomb, Entity asteroid) {

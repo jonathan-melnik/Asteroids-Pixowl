@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &71226117363777233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 71226117363777235}
+  - component: {fileID: 71226117363777234}
+  m_Layer: 0
+  m_Name: SFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &71226117363777235
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71226117363777233}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &71226117363777234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71226117363777233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 684f0d973ead94a708253e07585d7d19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _game:
+    spaceship:
+      shootNormal: {fileID: 8300000, guid: 179513b974264a346baf18750cf8a5da, type: 3}
+      shootMissile: {fileID: 8300000, guid: 63cea7bdb3b83f0479554237afb422ca, type: 3}
+      explode: {fileID: 8300000, guid: 55e0d34576d90a44ea4c9f40ceb56d56, type: 3}
+      hyperspace: {fileID: 8300000, guid: ddbd7ce222a645e40a4fd18dd766d554, type: 3}
+    asteroid:
+      explode: {fileID: 8300000, guid: b785ca11a2fcfe44f9303907db66d293, type: 3}
+    ufo:
+      invoke: {fileID: 8300000, guid: 94acc6f0d259a5648ae29e873cfd2ad9, type: 3}
+      spawn: {fileID: 8300000, guid: e4e0442a9b2441c4e97161480b47439e, type: 3}
+      shoot: {fileID: 8300000, guid: d71ba388e637d504d9a30991ccc1d83c, type: 3}
+      explode: {fileID: 8300000, guid: 88f429f5ac71b904a997eddd0ed58434, type: 3}
+    powerUp:
+      missiles: {fileID: 8300000, guid: 7cfc454a38e3dc64dab03864ecd09cd4, type: 3}
+      bomb: {fileID: 8300000, guid: 813fd1cff11fe6a4b860165513d42968, type: 3}
+      shield: {fileID: 8300000, guid: 38e00857526c71b4eb8d84d1158408d8, type: 3}
+  _ui:
+    startGame: {fileID: 8300000, guid: 6315cde14e4e98a439fd6bd321cf0c6c, type: 3}
+    pressToContinue: {fileID: 8300000, guid: 4247e775b8c15724c853f6487b724f9f, type: 3}
+  _fanfare:
+    gameCompleted: {fileID: 8300000, guid: 20cffa6b37f77964098a7522aff4f447, type: 3}
+    gameOver: {fileID: 8300000, guid: 75c34905da0e8cc4e8b00ee58d017477, type: 3}
+  _music:
+    theme: {fileID: 8300000, guid: 57b80da6a442a944aaa0ce1e3ac13f8f, type: 3}

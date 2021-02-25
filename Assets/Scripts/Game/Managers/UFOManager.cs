@@ -28,8 +28,9 @@ public class UFOManager : MonoBehaviour
     delegate void Eventhandler(object sender, EventArgs args);
     public event EventHandler ufoDestroyed;
 
+    const float INIT_DELAY = 4f;
     const float SPAWN_MIN_DELAY = 10f;
-    const float SPAWN_MAX_DELAY = 20f;
+    const float SPAWN_MAX_DELAY = 16f;
     const float INVOKE_TIME = 2.5f;
     const float SMALL_SIZE_CHANCE = 0.6f;
 
@@ -49,6 +50,8 @@ public class UFOManager : MonoBehaviour
     }
 
     System.Collections.IEnumerator ScheduleSpawning() {
+        yield return new WaitForSeconds(INIT_DELAY);
+        SpawnUFOAtRandomPos(1);
         while (_canScheduleSpawn) {
             float delay = UnityEngine.Random.Range(SPAWN_MIN_DELAY, SPAWN_MAX_DELAY);
             yield return new WaitForSeconds(delay);
@@ -70,6 +73,7 @@ public class UFOManager : MonoBehaviour
     System.Collections.IEnumerator InvokeSpawnUFO(Vector3 pos, int size) {
         spawningCount++;
         Game.instance.fxManager.SpawnEnemyApproaching(pos, INVOKE_TIME);
+        SoundManager.PlaySound(SFX.game.ufo.invoke, 0.2f);
         yield return new WaitForSeconds(INVOKE_TIME);
         SpawnUFO(pos, size);
         spawningCount--;
@@ -78,7 +82,9 @@ public class UFOManager : MonoBehaviour
     void SpawnUFO(Vector3 pos, int size) {
         var prefab = GetEntityPrefabWithSize(size);
         Entity ufo = _entityManager.Instantiate(prefab);
+#if UNITY_EDITOR
         _entityManager.SetName(ufo, "UFO");
+#endif
         var translation = new Translation() {
             Value = pos
         };
@@ -109,6 +115,8 @@ public class UFOManager : MonoBehaviour
         thrusters.transform.parent = transform;
 
         Game.instance.fxManager.PlayUFOAppears(pos);
+
+        SoundManager.PlaySound(SFX.game.ufo.spawn);
     }
 
     Vector3 GetRandomScreenPosition() {

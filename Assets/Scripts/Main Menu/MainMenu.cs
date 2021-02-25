@@ -1,3 +1,5 @@
+using EazyTools.SoundManager;
+using JonMelnik.Game;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,6 +34,7 @@ public class MainMenu : MonoBehaviour
         _isTransitioning = true;
         iTween.ValueTo(gameObject, iTween.Hash("from", 1, "to", 0, "time", 0.5f, "OnUpdate", "OnCanvasAlphaTweenUpdate"));
         warpDriveFx.SpeedUpAndFade();
+        SoundManager.PlaySound(SFX.ui.startGame, 0.7f);
         StartCoroutine(FadeOutWithDelay(0.7f));
     }
 

@@ -43,7 +43,9 @@ public class SpaceshipManager : MonoBehaviour
 
     public void SpawnSpaceship() {
         _spaceship = _entityManager.Instantiate(_spaceshipEntityPrefab);
+#if UNITY_EDITOR
         _entityManager.SetName(_spaceship, "Spaceship");
+#endif
         Game.instance.uiManager.hyperspace.Reset(1);
 
         thrusters.Activate();
@@ -55,7 +57,7 @@ public class SpaceshipManager : MonoBehaviour
         _spaceship = Entity.Null;
         thrusters.Deactivate();
 
-        SoundManager.PlaySound(SFX.game.spaceship.explode);
+        SoundManager.PlaySound(SFX.game.spaceship.explode, 0.5f);
     }
 
     public void ScheduleRespawn() {

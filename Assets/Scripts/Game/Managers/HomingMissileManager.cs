@@ -1,3 +1,5 @@
+using EazyTools.SoundManager;
+using JonMelnik.Game;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -73,8 +75,9 @@ public class HomingMissileManager : MonoBehaviour
 
     public void Spawn(Vector3 pos, float angle) {
         var missile = _entityManager.Instantiate(_missileEntityPrefab);
+#if UNITY_EDITOR
         _entityManager.SetName(missile, "Homing Missile");
-
+#endif
         var shotData = _entityManager.GetComponentData<ShotData>(missile);
 
         var translation = new Translation() {
@@ -103,6 +106,8 @@ public class HomingMissileManager : MonoBehaviour
         if (ammo <= 0) {
             Game.instance.spaceshipManager.SetShotType(ShotType.Normal);
         }
+
+        SoundManager.PlaySound(SFX.game.spaceship.shootMissile);
     }
 
     public void OnMissileDestroyed(Entity missile) {

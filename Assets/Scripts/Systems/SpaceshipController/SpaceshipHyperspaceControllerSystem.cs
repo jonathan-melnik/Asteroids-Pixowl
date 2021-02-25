@@ -1,3 +1,5 @@
+using EazyTools.SoundManager;
+using JonMelnik.Game;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -26,6 +28,7 @@ public class SpaceshipHyperspaceControllerSystem : JobComponentSystem
                     float y = UnityEngine.Random.Range(screenBottom, screenTop);
                     float3 newPos = new float3(x, y, 0);
                     Game.instance.fxManager.PlayHyperspace(tr.Value, newPos);
+                    SoundManager.PlaySound(SFX.game.spaceship.hyperspace);
                     tr.Value = newPos;
                     // Detengo a la nave
                     movement.accel = 0;

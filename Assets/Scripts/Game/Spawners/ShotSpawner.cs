@@ -1,3 +1,5 @@
+using EazyTools.SoundManager;
+using JonMelnik.Game;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -30,7 +32,9 @@ public class ShotSpawner : MonoBehaviour
 
     public void Spawn(Vector3 pos, float angle, bool isFromEnemy) {
         Entity shot = _entityManager.Instantiate(isFromEnemy ? _ufoShotEntityPrefab : _shotEntityPrefab);
+#if UNITY_EDITOR
         _entityManager.SetName(shot, "Shot");
+#endif
 
         var shotData = _entityManager.GetComponentData<ShotData>(shot);
 
@@ -48,5 +52,11 @@ public class ShotSpawner : MonoBehaviour
             velocity = new float3(math.cos(angle), math.sin(angle), 0) * shotData.speed
         };
         _entityManager.AddComponentData(shot, movement);
+
+        if (!isFromEnemy) {
+            SoundManager.PlaySound(SFX.game.spaceship.shootNormal, 0.7f);
+        } else {
+            SoundManager.PlaySound(SFX.game.ufo.shoot);
+        }
     }
 }
