@@ -31,6 +31,5 @@ todas las entidades de tipo enemy(asteroides, ufos, disparos de ufos)
 	Otro problema que tuve fue que al lanzar muchos misiles homing obtenia un error que faltaba el componente Translation en la entidad HomingMissile. Esto no se si tiene que ver con como resuelvo la colision(fuera de DOTS) o si es un bug de DOTS. Mi suposicion de que es un bug viene porque en ningun momento creo una entidad sin Translation ni tampoco remuevo Translation de las entidades.
 
 	Para concluir, DOTS me parece una herramienta muy interesante y me gusta poder mejorar la performance en mobile y asi obtener mejor framerate o mejorar el uso de bateria o evitar que el dispositivo recaliente. 
-	Me gusto el nuevo paradigma pero no se si tiene sentido implementar todo en DOTS. Hay casos en los que resulto muy util y otros en los que sentia que solo me complicaba las cosas y no obtenia mucho beneficio, porque tal vez eran sistemas que se ejecutaban sobre pocas o una entidad o quizas porque los sistemas hacian llamados a main thread entonces no podia usar Burst.
-	Pareciera mas una herramienta para usar en donde tenga sentido, como en la fisica o en comportamientos que rigen sobre muchas entidades.
+	Me gusto el nuevo paradigma y me gustaria que la tecnologia salga de estado preview y pase a ser parte del core de unity, o incluso que todo este hecho en DOTS. Las ventaja es varios ordenes de magnitud de rendimiento.
 	
