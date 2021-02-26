@@ -1,11 +1,24 @@
 Jonathan Melnik - 2021
 Pixowl
 
+Instrucciones:
+
+Ejecutar el juego desde MainMenu.scene
+
+El objetivo del juego es destruir a todos los asteroides y UFOs antes de perder las 3 vidas. 
+Si se pierden las 3 vidas es game over.
+Los UFOs van a aparecer cada cierto tiempo indefinidamente, y los asteroides son 3 fijos al principio.
+Cada tanto apareceran power ups. Hay 3 tipos distintos: Shield, Bomb y Homing Missile.
+El shield te hace invencible por cierto tiempo.
+La bomba destruye todo dentro del radio de la explosion.
+El misil homing establece un target y lo persigue.
+
 Cheatcodes: 
-	H: misil homing
+	H: Misil homing
 	B: bomba
 
 	
+Detalles de la implementacion:
 
 	Primero que nada quiero agradecerles por la oportunidad.
 
